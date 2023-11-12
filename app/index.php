@@ -1,6 +1,7 @@
 <?php
 // Error Handling
 error_reporting(-1);
+error_reporting(E_ALL ^ E_DEPRECATED); // no mostrar codigo deprecado
 ini_set('display_errors', 1);
 
 // require_once 'vendor/autoload.php';
@@ -17,10 +18,10 @@ require_once './controllers/PedidoController.php';
 $app = AppFactory::create();
 
 // Add error middleware
-$app->addErrorMiddleware(true, true, true); // ?
+$app->addErrorMiddleware(true, true, true);
 
 // Add parse body
-$app->addBodyParsingMiddleware(); // ?
+$app->addBodyParsingMiddleware();
 
 $app->get('[/]', function (Request $request, Response $response) {
     $response->getBody()->write(json_encode(['response' => 'OK']));
@@ -40,7 +41,7 @@ $app->group('/pedidos', function (RouteCollectorProxy $group) {
     $group->get('/{pedido}', \PedidoController::class . ':TraerUno');
     $group->post('[/]', \PedidoController::class . ':CargarUno');
     $group->put('/{pedido}', \PedidoController::class . ':ModificarUno');
-    // $group->delete('/{usuario}', \PedidoController::class . ':BorrarUno');
+    $group->delete('/{pedido}', \PedidoController::class . ':BorrarUno');
 });
 
 $app->run();

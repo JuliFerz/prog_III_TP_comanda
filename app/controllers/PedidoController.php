@@ -48,44 +48,48 @@ class PedidoController implements IApiUsable
 
     public function ModificarUno($request, $response, $args)
     {
-    //     $parametros = $request->getParsedBody();
+        $parametros = $request->getParsedBody();
 
-    //     $id = $args['usuario'];
-    //     $usuario = $parametros['usuario'];
-    //     $clave = $parametros['clave'];
-    //     $sector = $parametros['sector'];
-    //     $prioridad = $parametros['prioridad'] ?? 1;
+        $id = $args['pedido'];
+        $codigoPedido = $parametros['codigo_pedido'];
+        $idMesa = $parametros['id_mesa'];
+        $idUsuario = $parametros['id_usuario'];
+        $nombreCliente = $parametros['nombre_cliente'];
+        $descripcion = $parametros['descripcion'] ?? '';
+        $estado = $parametros['estado'] ?? 1;
 
-    //     $usr = new Usuario();
-    //     $usr->setId($id);
-    //     $usr->setUsuario($usuario);
-    //     $usr->setClave($clave);
-    //     $usr->setSector($sector);
-    //     $usr->setPrioridad($prioridad);
-    //     $res = $usr->modificarUsuario();
+        $pedido = new Pedido();
+        $pedido->setId($id);
+        $pedido->setCodigoPedido((int)$codigoPedido);
+        $pedido->setIdMesa((int) $idMesa);
+        $pedido->setIdUsuario((int) $idUsuario);
+        $pedido->setNombreCliente($nombreCliente);
+        $pedido->setDescripcion($descripcion);
+        $pedido->setEstado($estado);
+        $res = $pedido->modificarPedido();
 
-    //     if (!$res) {
-    //         $payload = json_encode(array("error" => "El usuario $id no existe"));
-    //     } else {
-    //         $payload = json_encode(array("mensaje" => "Usuario modificado con exito"));
-    //     }
+        if (!$res) {
+            $payload = json_encode(array("error" => "El pedido $id no existe"));
+        } else {
+            $payload = json_encode(array("mensaje" => "Pedido modificado con exito"));
+        }
+        $response->getBody()->write($payload);
 
-    //     $response->getBody()->write($payload);
-    //     return $response->withHeader('Content-Type', 'application/json');
+        return $response->withHeader('Content-Type', 'application/json');
     }
 
     public function BorrarUno($request, $response, $args)
     {
-    //     $id = $args['usuario'];
-    //     $res = Usuario::borrarUsuario($id);
+        $id = $args['pedido'];
+        $res = Pedido::borrarPedido($id);
 
-    //     if (!$res) {
-    //         $payload = json_encode(array("error" => "El usuario $id no existe"));
-    //     } else {
-    //         $payload = json_encode(array("mensaje" => "Usuario borrado con exito"));
-    //     }
-    //     $response->getBody()->write($payload);
-    //     return $response->withHeader('Content-Type', 'application/json');
+        if (!$res) {
+            $payload = json_encode(array("error" => "El pedido $id no existe"));
+        } else {
+            $payload = json_encode(array("mensaje" => "Pedido borrado con exito"));
+        }
+        $response->getBody()->write($payload);
+        return $response->withHeader('Content-Type', 'application/json');
     }
 }
 
