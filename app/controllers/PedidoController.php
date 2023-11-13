@@ -30,7 +30,7 @@ class PedidoController implements IApiUsable
         $idMesa = $parametros['idMesa'];
         $idUsuario = $parametros['idUsuario'];
         $nombreCliente = $parametros['nombreCliente'];
-        $descripcion = $parametros['descripcion'] ?? '';
+        $idProducto = $parametros['id_producto'] ?? '';
         $estado = $parametros['estado'] ?? 1;
 
         $pedido = new Pedido();
@@ -38,7 +38,7 @@ class PedidoController implements IApiUsable
         $pedido->setIdMesa($idMesa);
         $pedido->setIdUsuario($idUsuario);
         $pedido->setNombreCliente($nombreCliente);
-        $pedido->setDescripcion($descripcion);
+        $pedido->setIdProducto($idProducto);
         $pedido->setEstado($estado);
         $newPedido = $pedido->crearPedido();
         $payload = json_encode(array("mensaje" => "Pedido $newPedido creado con exito"));
@@ -55,7 +55,7 @@ class PedidoController implements IApiUsable
         $idMesa = $parametros['id_mesa'];
         $idUsuario = $parametros['id_usuario'];
         $nombreCliente = $parametros['nombre_cliente'];
-        $descripcion = $parametros['descripcion'] ?? '';
+        $idProducto = $parametros['id_producto'] ?? '';
         $estado = $parametros['estado'] ?? 1;
 
         $pedido = new Pedido();
@@ -64,7 +64,7 @@ class PedidoController implements IApiUsable
         $pedido->setIdMesa((int) $idMesa);
         $pedido->setIdUsuario((int) $idUsuario);
         $pedido->setNombreCliente($nombreCliente);
-        $pedido->setDescripcion($descripcion);
+        $pedido->setIdProducto($idProducto);
         $pedido->setEstado($estado);
         $res = $pedido->modificarPedido();
 

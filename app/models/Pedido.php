@@ -5,17 +5,16 @@ class Pedido {
     private int $_codigoPedido;
     private int $_idMesa;
     private int $_idUsuario;
+    private string $_idProducto;
     private string $_nombreCliente;
-    private string $_descripcion;
     private bool $_estado;
     private DateTime $_fechaBaja;
-    // private int $_tipoId;
 
 
     public static function obtenerTodos()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, codigo_pedido, id_mesa, id_usuario, nombre_cliente, descripcion, estado, fecha_baja FROM pedidos");
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, codigo_pedido, id_mesa, id_usuario, id_producto, nombre_cliente, estado, fecha_baja FROM pedidos");
         $consulta->execute();
 
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Pedido');
@@ -24,7 +23,7 @@ class Pedido {
     public static function obtenerPedido($id)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, codigo_pedido, id_mesa, id_usuario, nombre_cliente, descripcion, estado, fecha_baja FROM pedidos WHERE id = :id");
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, codigo_pedido, id_mesa, id_usuario, id_producto, nombre_cliente, estado, fecha_baja FROM pedidos WHERE id = :id");
         $consulta->bindValue(':id', $id, PDO::PARAM_STR);
         $consulta->execute();
         return $consulta->fetchObject('Pedido');
@@ -33,12 +32,13 @@ class Pedido {
     public function crearPedido()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO pedidos (codigo_pedido, id_mesa, id_usuario, nombre_cliente, descripcion, estado) VALUES (:codigo_pedido, :id_mesa, :id_usuario, :nombre_cliente, :descripcion, :estado)");
+        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO pedidos (codigo_pedido, id_mesa, id_usuario, nombre_cliente, id_producto, estado) 
+            VALUES (:codigo_pedido, :id_mesa, :id_usuario, :nombre_cliente, :id_producto, :estado)");
         $consulta->bindValue(':codigo_pedido', $this->_codigoPedido, PDO::PARAM_INT);
         $consulta->bindValue(':id_mesa', $this->_idMesa, PDO::PARAM_INT);
         $consulta->bindValue(':id_usuario', $this->_idUsuario, PDO::PARAM_INT);
         $consulta->bindValue(':nombre_cliente', $this->_nombreCliente, PDO::PARAM_STR);
-        $consulta->bindValue(':descripcion', $this->_descripcion, PDO::PARAM_STR);
+        $consulta->bindValue(':id_producto', $this->_idProducto, PDO::PARAM_INT);
         $consulta->bindValue(':estado', $this->_estado, PDO::PARAM_BOOL);
         $consulta->execute();
         return $objAccesoDatos->obtenerUltimoId();
@@ -56,7 +56,7 @@ class Pedido {
             id_mesa = :id_mesa,
             id_usuario = :id_usuario,
             nombre_cliente = :nombre_cliente,
-            descripcion = :descripcion,
+            id_producto = :id_producto,
             estado = :estado
             WHERE id = :id");
         $consulta->bindValue(':id', $this->_id, PDO::PARAM_INT);
@@ -64,7 +64,7 @@ class Pedido {
         $consulta->bindValue(':id_mesa', $this->_idMesa, PDO::PARAM_STR);
         $consulta->bindValue(':id_usuario', $this->_idUsuario, PDO::PARAM_STR);
         $consulta->bindValue(':nombre_cliente', $this->_nombreCliente, PDO::PARAM_INT);
-        $consulta->bindValue(':descripcion', $this->_descripcion, PDO::PARAM_INT);
+        $consulta->bindValue(':id_producto', $this->_idProducto, PDO::PARAM_INT);
         $consulta->bindValue(':estado', $this->_estado, PDO::PARAM_INT);
         $consulta->execute();
         return true;
@@ -101,8 +101,8 @@ class Pedido {
     public function getNombreCliente(){
         return $this->_nombreCliente;
     }
-    public function getDescripcion(){
-        return $this->_descripcion;
+    public function getIdproducto(){
+        return $this->_idProducto;
     }
     public function getEstado(){
         return $this->_estado;
@@ -124,8 +124,8 @@ class Pedido {
     public function setNombreCliente($valor){
         $this->_nombreCliente = $valor;
     }
-    public function setDescripcion($valor){
-        $this->_descripcion = $valor;
+    public function setIdProducto($valor){
+        $this->_idProducto = $valor;
     }
     public function setEstado($valor){
         $this->_estado = $valor;
