@@ -95,6 +95,9 @@ class Usuario {
     public function getPrioridad(){
         return $this->_prioridad;
     }
+    public function getFechaBaja(){
+        return $this->_fechaBaja;
+    }
 
     //-- Setter
     public function setId($valor){
@@ -111,6 +114,9 @@ class Usuario {
     }
     public function setPrioridad($valor){
         $this->_prioridad = $valor;
+    }
+    public function setFechaBaja($valor){
+        $this->_fechaBaja = $valor;
     }
     
 }
