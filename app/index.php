@@ -14,6 +14,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 require_once './db/AccesoDatos.php';
 require_once './controllers/UsuarioController.php';
 require_once './controllers/PedidoController.php';
+require_once './controllers/ProductoController.php';
 
 $app = AppFactory::create();
 
@@ -64,11 +65,11 @@ $app->group('/pedidos', function (RouteCollectorProxy $group) {
 });
 
 $app->group('/productos', function (RouteCollectorProxy $group) {
-    // $group->get('[/]', \ProductoController::class . ':TraerTodos');
-    // $group->get('/{producto}', \ProductoController::class . ':TraerUno');
-    // $group->post('[/]', \ProductoController::class . ':CargarUno');
-    // $group->put('/{producto}', \ProductoController::class . ':ModificarUno');
-    // $group->delete('/{producto}', \ProductoController::class . ':BorrarUno');
+    $group->get('[/]', \ProductoController::class . ':TraerTodos');
+    $group->get('/{producto}', \ProductoController::class . ':TraerUno');
+    $group->post('[/]', \ProductoController::class . ':CargarUno');
+    $group->put('/{producto}', \ProductoController::class . ':ModificarUno');
+    $group->delete('/{producto}', \ProductoController::class . ':BorrarUno');
 });
 
 $app->run();
