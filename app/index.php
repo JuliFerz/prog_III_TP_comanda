@@ -15,6 +15,7 @@ require_once './db/AccesoDatos.php';
 require_once './controllers/UsuarioController.php';
 require_once './controllers/PedidoController.php';
 require_once './controllers/ProductoController.php';
+require_once './controllers/TipoProductoController.php';
 
 $app = AppFactory::create();
 
@@ -43,25 +44,6 @@ $app->group('/pedidos', function (RouteCollectorProxy $group) {
     $group->post('[/]', \PedidoController::class . ':CargarUno');
     $group->put('/{pedido}', \PedidoController::class . ':ModificarUno');
     $group->delete('/{pedido}', \PedidoController::class . ':BorrarUno');
-    /*
-    CORREGIR:
-        . Generar nueva tabla de "productos", donde por ahora tiene:
-            "id"
-            "nombre"
-            "descripcion"
-            "tipo"
-            "precio"
-            "stock"
-            "estado"
-            "fecha_modificacion"
-            "fecha_baja"
-        . Generar los nuevos datos de prueba (con la pagina) para esta tabla
-
-        . Generar de nuevo la tabla de pedidos, pero con la columna de id_producto debajo de id_usuario
-        . Generar los nuevos datos de prueba a esta tabla actualizada (porque ahora debo pasarle los id de producto)
-        
-        . Revisar postman/codigo para ver que nada rompa
-    */
 });
 
 $app->group('/productos', function (RouteCollectorProxy $group) {
@@ -70,6 +52,12 @@ $app->group('/productos', function (RouteCollectorProxy $group) {
     $group->post('[/]', \ProductoController::class . ':CargarUno');
     $group->put('/{producto}', \ProductoController::class . ':ModificarUno');
     $group->delete('/{producto}', \ProductoController::class . ':BorrarUno');
+
+    $group->get('/tipo/', \TipoProductoController::class . ':TraerTodos');
+    $group->get('/tipo/{tipo}', \TipoProductoController::class . ':TraerUno');
+    $group->post('/tipo/', \TipoProductoController::class . ':CargarUno');
+    $group->put('/tipo/{tipo}', \TipoProductoController::class . ':ModificarUno');
+    $group->delete('/tipo/{tipo}', \TipoProductoController::class . ':BorrarUno');
 });
 
 $app->run();
