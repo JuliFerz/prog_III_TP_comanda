@@ -416,3 +416,11 @@ VALUES
   (10,1),
   (10,1);
 
+INSERT INTO `encuestas` (`codigo_pedido`,`puntos_mesa`,`puntos_restaurante`,`puntos_mozo`,`puntos_cocinero`,`comentarios`)
+VALUES
+  (20,6,4,7,3,"Estuvo bueno!"),
+  (21,5,5,7,6,"Todo ok."),
+  (22,6,10,7,3,"Tienen que mejorar."),
+  (23,4,3,4,3,"No me gusto."),
+  (24,7,5,2,6,"Fui con un amigo. "),
+  (25,4,8,5,8,"Que locura la merlusa!");

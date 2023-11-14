@@ -1,9 +1,17 @@
 <?php
 
+/*
+Estados de la mesa:
+    • "con cliente esperando pedido",
+    • "con cliente comiendo",
+    • "con cliente pagando", y;
+    • "cerrada".
+*/
+
 class Mesa {
     private int $_id;
     private int $_numeroMesa;
-    private bool $_estado;
+    private bool $_estado; // corregir
     private DateTime $_fechaBaja;
 
 

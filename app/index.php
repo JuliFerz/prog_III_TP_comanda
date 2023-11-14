@@ -17,6 +17,7 @@ require_once './controllers/PedidoController.php';
 require_once './controllers/ProductoController.php';
 require_once './controllers/TipoProductoController.php';
 require_once './controllers/MesaController.php';
+require_once './controllers/EncuestaController.php';
 
 $app = AppFactory::create();
 
@@ -67,6 +68,14 @@ $app->group('/mesas', function (RouteCollectorProxy $group) {
     $group->post('[/]', \MesaController::class . ':CargarUno');
     $group->put('/{mesa}', \MesaController::class . ':ModificarUno');
     $group->delete('/{mesa}', \MesaController::class . ':BorrarUno');
+});
+
+$app->group('/encuestas', function (RouteCollectorProxy $group) {
+    $group->get('[/]', \EncuestaController::class . ':TraerTodos');
+    $group->get('/{encuesta}', \EncuestaController::class . ':TraerUno');
+    $group->post('[/]', \EncuestaController::class . ':CargarUno');
+    $group->put('/{encuesta}', \EncuestaController::class . ':ModificarUno');
+    $group->delete('/{encuesta}', \EncuestaController::class . ':BorrarUno');
 });
 
 $app->run();
