@@ -15,8 +15,17 @@ class PedidoController implements IApiUsable
 
     public function TraerUno($request, $response, $args)
     {
-        $id = $args['pedido']; // se busca por ID
-        $pedido = Pedido::obtenerPedido($id);
+        $queryParams = $request->getQueryParams();
+        $id = $args['pedido'];
+        $traerTodos = isset($queryParams['pedido_completo'])
+            ? filter_var($queryParams['pedido_completo'], FILTER_VALIDATE_BOOLEAN)
+            : false;
+
+        if ($traerTodos) {
+            $pedido = Pedido::obtenerPedidosPorCodigo($id);
+        } else {
+            $pedido = Pedido::obtenerPedidoPorId($id);
+        }
 
         $payload = json_encode(["pedido" => $pedido]);
         $response->getBody()->write($payload);
@@ -26,22 +35,28 @@ class PedidoController implements IApiUsable
     public function CargarUno($request, $response, $args)
     {
         $parametros = $request->getParsedBody();
-        $codigoPedido = $parametros['codigoPedido'];
-        $idMesa = $parametros['idMesa'];
-        $idUsuario = $parametros['idUsuario'];
-        $nombreCliente = $parametros['nombreCliente'];
-        $idProducto = $parametros['id_producto'] ?? '';
+        $codigoPedido = $parametros['codigo_pedido'];
+        $idProducto = $parametros['id_producto'];
+        $idMesa = $parametros['id_mesa'];
+        $idUsuario = $parametros['id_usuario'];
+        $nombreCliente = $parametros['nombre_cliente'];
+        $descripcion = $parametros['descripcion'] ?? '';
         $estado = $parametros['estado'] ?? 1;
 
         $pedido = new Pedido();
         $pedido->setCodigoPedido($codigoPedido);
+        $pedido->setIdProducto($idProducto);
         $pedido->setIdMesa($idMesa);
         $pedido->setIdUsuario($idUsuario);
         $pedido->setNombreCliente($nombreCliente);
-        $pedido->setIdProducto($idProducto);
+        $pedido->setDescripcion($descripcion);
         $pedido->setEstado($estado);
-        $newPedido = $pedido->crearPedido();
-        $payload = json_encode(array("mensaje" => "Pedido $newPedido creado con exito"));
+        $res = $pedido->crearPedido();
+        if (!$res) {
+            $payload = json_encode(array("mensaje" => "Ya existe una orden con codigo de pedido $codigoPedido"));
+        } else {
+            $payload = json_encode(array("mensaje" => "Pedido $res creado con exito"));
+        }
         $response->getBody()->write($payload);
         return $response->withHeader('Content-Type', 'application/json');
     }
@@ -52,19 +67,21 @@ class PedidoController implements IApiUsable
 
         $id = $args['pedido'];
         $codigoPedido = $parametros['codigo_pedido'];
+        $idProducto = $parametros['id_producto'];
         $idMesa = $parametros['id_mesa'];
         $idUsuario = $parametros['id_usuario'];
         $nombreCliente = $parametros['nombre_cliente'];
-        $idProducto = $parametros['id_producto'] ?? '';
+        $descripcion = $parametros['descripcion'] ?? '';
         $estado = $parametros['estado'] ?? 1;
 
         $pedido = new Pedido();
         $pedido->setId($id);
-        $pedido->setCodigoPedido((int)$codigoPedido);
+        $pedido->setCodigoPedido((int) $codigoPedido);
+        $pedido->setIdProducto((int) $idProducto);
         $pedido->setIdMesa((int) $idMesa);
         $pedido->setIdUsuario((int) $idUsuario);
         $pedido->setNombreCliente($nombreCliente);
-        $pedido->setIdProducto($idProducto);
+        $pedido->setDescripcion($descripcion);
         $pedido->setEstado($estado);
         $res = $pedido->modificarPedido();
 
