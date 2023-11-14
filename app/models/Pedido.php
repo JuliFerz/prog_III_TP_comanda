@@ -43,14 +43,25 @@ class Pedido {
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Pedido');
     }
 
+    public static function obtenerCodigoExistente($idCodigo)
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM pedidos WHERE codigo_pedido = :codPedido;");
+        $consulta->bindValue(':codPedido', $idCodigo, PDO::PARAM_INT);
+        $consulta->execute();
+        return $consulta->fetchAll(PDO::FETCH_CLASS, 'Pedido');
+    }
+
     public function crearPedido()
     {
-        if (Pedido::obtenerPedidosPorCodigo($this->_codigoPedido)){ 
+        $bdPedido = Pedido::obtenerCodigoExistente($this->_codigoPedido);
+        $bdPedido = $bdPedido ? $bdPedido[0]->fecha_baja : null;
+        if ($bdPedido){ 
             return false;
         }
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO pedidos (codigo_pedido, id_producto, id_mesa, id_usuario, nombre_cliente, estado) 
-            VALUES (:codigo_pedido, :id_mesa, :id_usuario, :nombre_cliente, :id_producto, :estado)");
+            VALUES (:codigo_pedido, :id_producto, :id_mesa, :id_usuario, :nombre_cliente, :estado)");
         $consulta->bindValue(':codigo_pedido', $this->_codigoPedido, PDO::PARAM_INT);
         $consulta->bindValue(':id_producto', $this->_idProducto, PDO::PARAM_INT);
         $consulta->bindValue(':id_mesa', $this->_idMesa, PDO::PARAM_INT);

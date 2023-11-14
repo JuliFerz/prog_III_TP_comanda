@@ -53,7 +53,7 @@ class PedidoController implements IApiUsable
         $pedido->setEstado($estado);
         $res = $pedido->crearPedido();
         if (!$res) {
-            $payload = json_encode(array("mensaje" => "Ya existe una orden con codigo de pedido $codigoPedido"));
+            $payload = json_encode(array("mensaje" => "El codigo de pedido $codigoPedido se encuentra dado de baja."));
         } else {
             $payload = json_encode(array("mensaje" => "Pedido $res creado con exito"));
         }
