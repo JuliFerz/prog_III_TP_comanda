@@ -16,6 +16,7 @@ require_once './controllers/UsuarioController.php';
 require_once './controllers/PedidoController.php';
 require_once './controllers/ProductoController.php';
 require_once './controllers/TipoProductoController.php';
+require_once './controllers/MesaController.php';
 
 $app = AppFactory::create();
 
@@ -58,6 +59,14 @@ $app->group('/productos', function (RouteCollectorProxy $group) {
     $group->post('/tipo/', \TipoProductoController::class . ':CargarUno');
     $group->put('/tipo/{tipo}', \TipoProductoController::class . ':ModificarUno');
     $group->delete('/tipo/{tipo}', \TipoProductoController::class . ':BorrarUno');
+});
+
+$app->group('/mesas', function (RouteCollectorProxy $group) {
+    $group->get('[/]', \MesaController::class . ':TraerTodos');
+    $group->get('/{mesa}', \MesaController::class . ':TraerUno');
+    $group->post('[/]', \MesaController::class . ':CargarUno');
+    $group->put('/{mesa}', \MesaController::class . ':ModificarUno');
+    $group->delete('/{mesa}', \MesaController::class . ':BorrarUno');
 });
 
 $app->run();
