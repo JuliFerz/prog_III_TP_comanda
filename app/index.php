@@ -46,6 +46,7 @@ $app->group('/pedidos', function (RouteCollectorProxy $group) {
     $group->post('[/]', \PedidoController::class . ':CargarUno');
     $group->put('/{pedido}', \PedidoController::class . ':ModificarUno');
     $group->delete('/{pedido}', \PedidoController::class . ':BorrarUno');
+    $group->post('/{pedido}/tomarFoto', \PedidoController::class . ':TomarFoto');
 });
 
 $app->group('/productos', function (RouteCollectorProxy $group) {

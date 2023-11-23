@@ -41,6 +41,7 @@ class PedidoController implements IApiUsable
         $idUsuario = $parametros['id_usuario'];
         $nombreCliente = $parametros['nombre_cliente'];
         $descripcion = $parametros['descripcion'] ?? '';
+        $foto = $parametros['foto'] ?? '';
         $estado = $parametros['estado'] ?? 1;
 
         $pedido = new Pedido();
@@ -49,6 +50,7 @@ class PedidoController implements IApiUsable
         $pedido->setIdMesa($idMesa);
         $pedido->setIdUsuario($idUsuario);
         $pedido->setNombreCliente($nombreCliente);
+        $pedido->setFoto($foto);
         $pedido->setDescripcion($descripcion);
         $pedido->setEstado($estado);
         $res = $pedido->crearPedido();
@@ -107,6 +109,31 @@ class PedidoController implements IApiUsable
         }
         $response->getBody()->write($payload);
         return $response->withHeader('Content-Type', 'application/json');
+    }
+
+    public function TomarFoto($request, $response, $args)
+    {
+        try {
+            $archivos = $request->getUploadedFiles();
+            $parametros = $request->getParsedBody();
+            $idPedido = $args['pedido'];
+            $idUsuario = $parametros['id_usuario'];
+
+            $pedido = new Pedido();
+            $pedido->setId($idPedido);
+            $res = $pedido->actualizarFoto($archivos['foto'], $idUsuario);
+
+            if (!$res) {
+                $payload = json_encode(array("error" => "El pedido $idPedido no existe"));
+            } else {
+                $payload = json_encode(array("mensaje" => "Foto subida al pedido con exito"));
+            }
+        } catch (Exception $err){
+            $payload = json_encode(['error' => $err->getMessage()]);
+        } finally {
+            $response->getBody()->write($payload);
+            return $response->withHeader('Content-Type', 'application/json');
+        }
     }
 }
 
