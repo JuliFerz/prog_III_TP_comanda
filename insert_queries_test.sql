@@ -383,38 +383,18 @@ VALUES
   ("Alfajor",4,7277,4,1,"2023-11-12 10:46:00");
 
 
-INSERT INTO `mesas` (`numero_mesa`,`estado`)
+INSERT INTO `mesas` (`estado`)
 VALUES
-  (1,1),
-  (1,1),
-  (1,1),
-  (2,1),
-  (2,1),
-  (2,1),
-  (3,1),
-  (3,1),
-  (3,1),
-  (4,1),
-  (4,1),
-  (4,1),
-  (5,1),
-  (5,1),
-  (5,1),
-  (6,1),
-  (6,1),
-  (6,1),
-  (7,1),
-  (7,1),
-  (7,1),
-  (8,1),
-  (8,1),
-  (8,1),
-  (9,1),
-  (9,1),
-  (9,1),
-  (10,1),
-  (10,1),
-  (10,1);
+  (1),
+  (1),
+  (1),
+  (1),
+  (1),
+  (1),
+  (1),
+  (1),
+  (1),
+  (1);
 
 INSERT INTO `encuestas` (`codigo_pedido`,`puntos_mesa`,`puntos_restaurante`,`puntos_mozo`,`puntos_cocinero`,`comentarios`)
 VALUES

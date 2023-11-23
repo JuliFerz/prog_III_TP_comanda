@@ -15,17 +15,8 @@ class MesaController implements IApiUsable
 
     public function TraerUno($request, $response, $args)
     {
-        $queryParams = $request->getQueryParams();
         $id = $args['mesa'];
-        $traerMesaCompleta = isset($queryParams['mesa_completa'])
-            ? filter_var($queryParams['mesa_completa'], FILTER_VALIDATE_BOOLEAN)
-            : false;
-
-        if ($traerMesaCompleta) {
-            $mesa = Mesa::obtenerMesasPorNumeroMesa($id);
-        } else {
-            $mesa = Mesa::obtenerMesaPorId($id);
-        }
+        $mesa = Mesa::obtenerMesaPorId($id);
 
         $payload = json_encode(["mesa" => $mesa]);
         $response->getBody()->write($payload);
@@ -35,18 +26,12 @@ class MesaController implements IApiUsable
     public function CargarUno($request, $response, $args)
     {
         $parametros = $request->getParsedBody();
-        $numeroMesa = $parametros['numero_mesa'];
         $estado = $parametros['estado'] ?? 1; // TODO: no pasar este parametro
 
         $mesa = new Mesa();
-        $mesa->setNumeroMesa($numeroMesa);
         $mesa->setEstado($estado);
         $res = $mesa->crearMesa();
-        if (!$res){
-            $payload = json_encode(array("mensaje" => "La mesa $numeroMesa se encuentra dada de baja"));
-        } else {
             $payload = json_encode(array("mensaje" => "Mesa $res creado con exito"));
-        }
         $response->getBody()->write($payload);
         return $response->withHeader('Content-Type', 'application/json');
     }
@@ -56,11 +41,11 @@ class MesaController implements IApiUsable
         $parametros = $request->getParsedBody();
 
         $id = $args['mesa'];
-        $numeroMesa = $parametros['numero_mesa'];
+        $estado = $parametros['estado'];
 
         $mesa = new Mesa();
         $mesa->setId($id);
-        $mesa->setNumeroMesa($numeroMesa);
+        $mesa->setEstado($estado);
         $res = $mesa->modificarMesa();
 
         if (!$res) {
