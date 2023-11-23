@@ -7,7 +7,15 @@ class PedidoController implements IApiUsable
 {
     public function TraerTodos($request, $response, $args)
     {
-        $lista = Pedido::obtenerTodos();
+        $queryParams = $request->getQueryParams();
+        $pedidosPorUsuario = isset($queryParams['usuario'])
+            ? $queryParams['usuario']
+            : false;
+        if($pedidosPorUsuario){
+            $lista = Pedido::obtenerTodosPorUsuario($pedidosPorUsuario);
+        } else {
+            $lista = Pedido::obtenerTodos();
+        }
         $payload = json_encode(["listaPedidos" => $lista]);
         $response->getBody()->write($payload);
         return $response->withHeader('Content-Type', 'application/json');

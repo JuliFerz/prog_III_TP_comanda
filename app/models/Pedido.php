@@ -19,7 +19,17 @@ class Pedido {
     public static function obtenerTodos()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, codigo_pedido, id_producto, id_mesa, id_usuario, nombre_cliente, descripcion, estado, fecha_baja FROM pedidos");
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM pedidos");
+        $consulta->execute();
+
+        return $consulta->fetchAll(PDO::FETCH_CLASS, 'Pedido');
+    }
+
+    public static function obtenerTodosPorUsuario($id)
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM pedidos WHERE id_usuario = :id");
+        $consulta->bindValue(':id', $id, PDO::PARAM_STR);
         $consulta->execute();
 
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Pedido');
@@ -28,7 +38,7 @@ class Pedido {
     public static function obtenerPedidoPorId($id)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, codigo_pedido, id_producto, id_mesa, id_usuario, nombre_cliente, descripcion, estado, fecha_baja FROM pedidos WHERE id = :id");
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM pedidos WHERE id = :id");
         $consulta->bindValue(':id', $id, PDO::PARAM_STR);
         $consulta->execute();
         // return $consulta->fetchObject('Pedido');
