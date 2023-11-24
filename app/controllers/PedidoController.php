@@ -59,7 +59,6 @@ class PedidoController implements IApiUsable
             PedidoController::ValidarCodigo($codigoPedido);
             $idProducto = $parametros['id_producto'];
             $idMesa = $parametros['id_mesa'];
-            $idUsuario = $parametros['id_usuario'];
             $nombreCliente = $parametros['nombre_cliente'];
             $descripcion = $parametros['descripcion'] ?? '';
             $foto = $parametros['foto'] ?? '';
@@ -68,7 +67,6 @@ class PedidoController implements IApiUsable
             $pedido->setCodigoPedido($codigoPedido);
             $pedido->setIdProducto($idProducto);
             $pedido->setIdMesa($idMesa);
-            $pedido->setIdUsuario($idUsuario);
             $pedido->setNombreCliente($nombreCliente);
             $pedido->setFoto($foto);
             $pedido->setDescripcion($descripcion);
@@ -93,10 +91,10 @@ class PedidoController implements IApiUsable
         $id = $args['pedido'];
         $idProducto = $parametros['id_producto'];
         $idMesa = $parametros['id_mesa'];
-        $idUsuario = $parametros['id_usuario'];
+        $idUsuario = $parametros['id_usuario'] ?? '';
         $nombreCliente = $parametros['nombre_cliente'];
         $descripcion = $parametros['descripcion'] ?? '';
-        $estado = $parametros['estado'] ?? 1; // TODO: el estado que se recibe debe ser entre los valores posibles
+        $estado = $parametros['estado'] ?? ''; // TODO: el estado que se recibe debe ser entre los valores posibles
 
         $pedido = new Pedido();
         $pedido->setId($id);
