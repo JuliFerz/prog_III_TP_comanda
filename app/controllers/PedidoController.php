@@ -44,7 +44,6 @@ class PedidoController implements IApiUsable
     {
         try {
             $parametros = $request->getParsedBody();
-            // $codigoPedido = PedidoController::GenerarCodigo(5);
             $codigoPedido = isset($parametros['codigo_pedido'])
                 ? $parametros['codigo_pedido']
                 : PedidoController::GenerarCodigo(5);
@@ -55,7 +54,6 @@ class PedidoController implements IApiUsable
             $nombreCliente = $parametros['nombre_cliente'];
             $descripcion = $parametros['descripcion'] ?? '';
             $foto = $parametros['foto'] ?? '';
-            $estado = $parametros['estado'] ?? 1;
 
             $pedido = new Pedido();
             $pedido->setCodigoPedido($codigoPedido);
@@ -65,7 +63,6 @@ class PedidoController implements IApiUsable
             $pedido->setNombreCliente($nombreCliente);
             $pedido->setFoto($foto);
             $pedido->setDescripcion($descripcion);
-            $pedido->setEstado($estado);
             $res = $pedido->crearPedido();
             if (!$res) {
                 $payload = json_encode(array("mensaje" => "El codigo de pedido $codigoPedido se encuentra dado de baja."));
@@ -90,7 +87,7 @@ class PedidoController implements IApiUsable
         $idUsuario = $parametros['id_usuario'];
         $nombreCliente = $parametros['nombre_cliente'];
         $descripcion = $parametros['descripcion'] ?? '';
-        $estado = $parametros['estado'] ?? 1;
+        $estado = $parametros['estado'] ?? 1; // TODO: el estado que se recibe debe ser entre los valores posibles
 
         $pedido = new Pedido();
         $pedido->setId($id);

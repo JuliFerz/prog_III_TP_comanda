@@ -12,7 +12,7 @@ class Pedido {
     private string $_nombreCliente;
     private string $_descripcion;
     private string $_foto;
-    private bool $_estado;
+    private string $_estado = 'pendiente';
     private DateTime $_fechaBaja;
 
 
@@ -28,7 +28,7 @@ class Pedido {
     public static function obtenerTodosPorUsuario($id)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM pedidos WHERE id_usuario = :id");
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM pedidos WHERE id_usuario = :id AND estado = 'pendiente'");
         $consulta->bindValue(':id', $id, PDO::PARAM_STR);
         $consulta->execute();
 
@@ -82,7 +82,7 @@ class Pedido {
         $consulta->bindValue(':id_usuario', $this->_idUsuario, PDO::PARAM_INT);
         $consulta->bindValue(':nombre_cliente', $this->_nombreCliente, PDO::PARAM_STR);
         $consulta->bindValue(':foto', $this->_foto, PDO::PARAM_STR);
-        $consulta->bindValue(':estado', $this->_estado, PDO::PARAM_BOOL);
+        $consulta->bindValue(':estado', $this->_estado, PDO::PARAM_STR);
         $consulta->execute();
         return $objAccesoDatos->obtenerUltimoId();
     }
