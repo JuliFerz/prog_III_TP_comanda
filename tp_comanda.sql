@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 12-11-2023 a las 01:46:08
+-- Tiempo de generación: 24-11-2023 a las 02:26:19
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.0.28
 
@@ -24,23 +24,61 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `mesa`
+-- Estructura de tabla para la tabla `encuestas`
 --
 
-CREATE TABLE `mesa` (
-  `id` int(5) NOT NULL,
-  `estado` tinyint(1) NOT NULL,
-  `foto_mesa` varchar(25) NOT NULL
+CREATE TABLE `encuestas` (
+  `id` int(11) NOT NULL,
+  `codigo_pedido` int(11) NOT NULL,
+  `puntos_mesa` int(11) NOT NULL,
+  `puntos_restaurante` int(11) NOT NULL,
+  `puntos_mozo` int(11) NOT NULL,
+  `puntos_cocinero` int(11) NOT NULL,
+  `comentarios` varchar(66) NOT NULL,
+  `fecha_baja` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `mesa`
+-- Volcado de datos para la tabla `encuestas`
 --
 
-INSERT INTO `mesa` (`id`, `estado`, `foto_mesa`) VALUES
-(1, 0, '/test.png'),
-(2, 1, '/test2.png'),
-(3, 1, '/test3.png');
+INSERT INTO `encuestas` (`id`, `codigo_pedido`, `puntos_mesa`, `puntos_restaurante`, `puntos_mozo`, `puntos_cocinero`, `comentarios`, `fecha_baja`) VALUES
+(1, 20, 10, 9, 8, 7, 'Estuvo la verdad excelente todo...', NULL),
+(2, 21, 5, 5, 7, 6, 'Todo ok.', NULL),
+(3, 22, 6, 10, 7, 3, 'Tienen que mejorar.', NULL),
+(4, 23, 4, 3, 4, 3, 'No me gusto.', NULL),
+(5, 24, 7, 5, 2, 6, 'Fui con un amigo. ', NULL),
+(6, 25, 4, 8, 5, 8, 'Que locura la merlusa!', NULL),
+(7, 1, 9, 8, 7, 6, 'Todo ok por el momento.', '2023-11-14');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `mesas`
+--
+
+CREATE TABLE `mesas` (
+  `id` int(11) NOT NULL,
+  `estado` tinyint(1) NOT NULL,
+  `fecha_baja` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `mesas`
+--
+
+INSERT INTO `mesas` (`id`, `estado`, `fecha_baja`) VALUES
+(1, 1, NULL),
+(2, 1, NULL),
+(3, 1, NULL),
+(4, 1, NULL),
+(5, 1, NULL),
+(6, 1, NULL),
+(7, 1, NULL),
+(8, 1, NULL),
+(9, 1, NULL),
+(10, 1, NULL),
+(11, 0, '2023-11-23');
 
 -- --------------------------------------------------------
 
@@ -50,120 +88,143 @@ INSERT INTO `mesa` (`id`, `estado`, `foto_mesa`) VALUES
 
 CREATE TABLE `pedidos` (
   `id` int(11) NOT NULL,
-  `codigo_pedido` int(5) NOT NULL,
+  `codigo_pedido` varchar(5) NOT NULL,
+  `id_producto` int(11) NOT NULL,
   `id_mesa` int(11) NOT NULL,
   `id_usuario` int(11) NOT NULL,
   `nombre_cliente` varchar(50) NOT NULL,
   `descripcion` varchar(100) DEFAULT NULL,
-  `estado` tinyint(1) NOT NULL
+  `foto` varchar(50) DEFAULT NULL,
+  `estado` tinyint(1) NOT NULL,
+  `fecha_baja` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `pedidos`
 --
 
-INSERT INTO `pedidos` (`id`, `codigo_pedido`, `id_mesa`, `id_usuario`, `nombre_cliente`, `descripcion`, `estado`) VALUES
-(1, 1000, 1, 72, 'Kasper Alonsos', NULL, 1),
-(2, 1001, 2, 15, 'Audra Matias', NULL, 0),
-(3, 1002, 3, 49, 'Cora Zuniga', NULL, 1),
-(4, 1003, 4, 87, 'Odette Castro', NULL, 1),
-(5, 1004, 5, 12, 'Lana Maximo', NULL, 0),
-(6, 1005, 6, 30, 'Ferdinand Monserrat', NULL, 0),
-(7, 1006, 7, 16, 'Beverly Vargas', NULL, 1),
-(8, 1007, 8, 62, 'Leonard Daniel', NULL, 0),
-(9, 1008, 9, 89, 'Astra Benjamin', NULL, 1),
-(10, 1009, 10, 39, 'Zahir Castillo', NULL, 1),
-(11, 1010, 11, 66, 'Keefe Thiarre', NULL, 0),
-(12, 1011, 12, 61, 'Jessica Azizi', NULL, 1),
-(13, 1012, 13, 75, 'Tanner Sebastian', NULL, 1),
-(14, 1013, 14, 62, 'Ayanna Juan', NULL, 1),
-(15, 1014, 15, 90, 'Hanna Fuentes', NULL, 0),
-(16, 1015, 16, 84, 'Daniel Fuentes', NULL, 0),
-(17, 1016, 17, 73, 'Colt Gabriel', NULL, 0),
-(18, 1017, 18, 44, 'Cally Cortes', NULL, 1),
-(19, 1018, 19, 96, 'Ivory Diem', NULL, 1),
-(20, 1019, 20, 56, 'Nash Reyes', NULL, 1),
-(21, 1020, 21, 75, 'Dustin Castro', NULL, 0),
-(22, 1021, 22, 70, 'Hollee Morales', NULL, 1),
-(23, 1022, 23, 2, 'Madison Castillo', NULL, 0),
-(24, 1023, 24, 37, 'Gloria Carrasco', NULL, 1),
-(25, 1024, 25, 100, 'Illiana Rivera', NULL, 0),
-(26, 1025, 26, 38, 'Kareem Martina', NULL, 0),
-(27, 1026, 27, 30, 'Talon Diaz', NULL, 0),
-(28, 1027, 28, 49, 'Brady Laura', NULL, 0),
-(29, 1028, 29, 46, 'Tatyana Carolina', NULL, 1),
-(30, 1029, 30, 73, 'Elijah Sebastian', NULL, 0),
-(31, 1030, 31, 14, 'Declan Bentlee', NULL, 1),
-(32, 1031, 32, 30, 'Otto Alonsos', NULL, 1),
-(33, 1032, 33, 62, 'Juliet Javier', NULL, 0),
-(34, 1033, 34, 26, 'Erasmus Benjamin', NULL, 1),
-(35, 1034, 35, 52, 'Brian Pia', NULL, 1),
-(36, 1035, 36, 95, 'Tanya Bravo', NULL, 0),
-(37, 1036, 37, 60, 'Noelani Azizi', NULL, 0),
-(38, 1037, 38, 73, 'Rogan Florencia', NULL, 0),
-(39, 1038, 39, 80, 'Slade Pascal', NULL, 1),
-(40, 1039, 40, 56, 'Oscar Laura', NULL, 1),
-(41, 1040, 41, 83, 'Violet Juan', NULL, 1),
-(42, 1041, 42, 77, 'Cain Camila', NULL, 0),
-(43, 1042, 43, 85, 'Xenos Zuniga', NULL, 0),
-(44, 1043, 44, 49, 'Sebastian Gonzalez', NULL, 1),
-(45, 1044, 45, 36, 'Zeus Bastian', NULL, 1),
-(46, 1045, 46, 75, 'Todd Isabella', NULL, 1),
-(47, 1046, 47, 96, 'James Felipe', NULL, 0),
-(48, 1047, 48, 74, 'Erin Gonzalez', NULL, 0),
-(49, 1048, 49, 35, 'Zoe Fuentes', NULL, 1),
-(50, 1049, 50, 58, 'Whilemina Alonsos', NULL, 0),
-(51, 1050, 51, 64, 'Idona Monserrat', NULL, 0),
-(52, 1051, 52, 10, 'Gloria Fernandez', NULL, 1),
-(53, 1052, 53, 4, 'Wendy Valenzuela', NULL, 0),
-(54, 1053, 54, 39, 'Ivory Julieta', NULL, 0),
-(55, 1054, 55, 63, 'Elizabeth Diem', NULL, 0),
-(56, 1055, 56, 23, 'Amanda Benjamin', NULL, 0),
-(57, 1056, 57, 2, 'Erasmus Rivera', NULL, 1),
-(58, 1057, 58, 19, 'Adrian Isabella', NULL, 1),
-(59, 1058, 59, 63, 'Yen Cortes', NULL, 0),
-(60, 1059, 60, 81, 'Rinah Joaquin', NULL, 0),
-(61, 1060, 61, 74, 'Kylie Vergara', NULL, 0),
-(62, 1061, 62, 45, 'Quynn Diem', NULL, 1),
-(63, 1062, 63, 75, 'Reuben Martin', NULL, 0),
-(64, 1063, 64, 53, 'Kadeem Gonzalez', NULL, 1),
-(65, 1064, 65, 12, 'Athena Gabriel', NULL, 0),
-(66, 1065, 66, 15, 'Odessa Isabella', NULL, 0),
-(67, 1066, 67, 17, 'Hop Cortes', NULL, 1),
-(68, 1067, 68, 94, 'Meredith Paz', NULL, 0),
-(69, 1068, 69, 32, 'Callum Flores', NULL, 0),
-(70, 1069, 70, 8, 'Brenden Castillo', NULL, 0),
-(71, 1070, 71, 98, 'Irene Javier', NULL, 1),
-(72, 1071, 72, 56, 'Barclay Sanchez', NULL, 1),
-(73, 1072, 73, 96, 'Demetrius Miranda', NULL, 0),
-(74, 1073, 74, 75, 'Lester Paz', NULL, 1),
-(75, 1074, 75, 22, 'Colt Julieta', NULL, 0),
-(76, 1075, 76, 16, 'Linus Azizi', NULL, 1),
-(77, 1076, 77, 41, 'Sandra Juan', NULL, 0),
-(78, 1077, 78, 6, 'Ann Catalina', NULL, 0),
-(79, 1078, 79, 41, 'Jamal Rivera', NULL, 0),
-(80, 1079, 80, 87, 'Cooper Alonsos', NULL, 0),
-(81, 1080, 81, 20, 'Unity Martina', NULL, 0),
-(82, 1081, 82, 59, 'Micah Diego', NULL, 1),
-(83, 1082, 83, 33, 'Jonah Miranda', NULL, 0),
-(84, 1083, 84, 39, 'William Cristobal', NULL, 1),
-(85, 1084, 85, 65, 'Sebastian Vargas', NULL, 0),
-(86, 1085, 86, 81, 'Graiden Perez', NULL, 1),
-(87, 1086, 87, 77, 'Martena Cristobal', NULL, 1),
-(88, 1087, 88, 29, 'Anika Gabriela', NULL, 0),
-(89, 1088, 89, 13, 'Cora Julieta', NULL, 1),
-(90, 1089, 90, 68, 'Myra Isabella', NULL, 0),
-(91, 1090, 91, 18, 'Hedda Contreras', NULL, 1),
-(92, 1091, 92, 7, 'Maite Isabella', NULL, 1),
-(93, 1092, 93, 89, 'Scott Rivera', NULL, 1),
-(94, 1093, 94, 22, 'Ursula Juan', NULL, 1),
-(95, 1094, 95, 87, 'Penelope Vasquez', NULL, 0),
-(96, 1095, 96, 8, 'Gary Paula', NULL, 0),
-(97, 1096, 97, 93, 'Elijah Fernanda', NULL, 0),
-(98, 1097, 98, 42, 'Oliver Espinoza', NULL, 1),
-(99, 1098, 99, 81, 'Vera Diem', NULL, 1),
-(100, 1099, 100, 3, 'Axel Augustin', NULL, 0),
-(101, 1101, 4, 45, 'Cliente de prueba', '', 1);
+INSERT INTO `pedidos` (`id`, `codigo_pedido`, `id_producto`, `id_mesa`, `id_usuario`, `nombre_cliente`, `descripcion`, `foto`, `estado`, `fecha_baja`) VALUES
+(1, 'Qud25', 5, 1, 74, 'Leah Castro', NULL, NULL, 0, NULL),
+(2, 'Qud25', 9, 1, 93, 'Natalie Atlas', NULL, NULL, 0, NULL),
+(3, 'Qud25', 5, 1, 10, 'Uta Carolina', NULL, NULL, 0, NULL),
+(4, 'OiQ1h', 2, 2, 21, 'Beatrice Espinoza', NULL, NULL, 0, NULL),
+(5, 'OiQ1h', 12, 2, 55, 'Beck Flores', NULL, NULL, 1, NULL),
+(6, 'OiQ1h', 7, 2, 20, 'Zeph Nicolas', NULL, NULL, 1, NULL),
+(7, '4Bev7', 8, 3, 79, 'Martha Sepulveda', NULL, NULL, 0, NULL),
+(8, '4Bev7', 13, 3, 77, 'Gregory Silva', NULL, NULL, 0, NULL),
+(9, '4Bev7', 15, 3, 17, 'Prescott Trinidad', NULL, NULL, 1, NULL),
+(10, '9lTBs', 2, 4, 13, 'Rashad Maximiliano', NULL, NULL, 0, NULL),
+(11, '9lTBs', 4, 4, 72, 'Idona Alexandra', NULL, NULL, 1, NULL),
+(12, '9lTBs', 17, 4, 100, 'Lani Rocio', NULL, NULL, 1, NULL),
+(13, 'rnePW', 11, 5, 9, 'Elton Soto', NULL, NULL, 0, NULL),
+(14, 'rnePW', 7, 5, 80, 'Carla Testudines', NULL, NULL, 0, NULL),
+(15, 'rnePW', 12, 5, 3, 'Noah Herrera', NULL, NULL, 0, NULL),
+(16, 'NKOTn', 11, 6, 13, 'Honorato Flores', NULL, NULL, 0, NULL),
+(17, 'NKOTn', 3, 6, 53, 'Uma Vasquez', NULL, NULL, 0, NULL),
+(18, 'NKOTn', 7, 6, 14, 'Nora Soto', NULL, NULL, 1, NULL),
+(19, 'DoEUa', 15, 7, 94, 'Merrill Fernanda', NULL, NULL, 0, NULL),
+(20, 'DoEUa', 9, 7, 66, 'William Alexandra', NULL, NULL, 0, NULL),
+(21, 'DoEUa', 10, 7, 37, 'Baxter Sofia', NULL, NULL, 0, NULL),
+(22, 'nrqCM', 4, 8, 80, 'Yen Trinidad', NULL, NULL, 1, NULL),
+(23, 'nrqCM', 6, 8, 5, 'Madonna Camila', NULL, NULL, 0, NULL),
+(24, 'nrqCM', 2, 8, 42, 'Cheryl Perez', NULL, NULL, 1, NULL),
+(25, 'avdcy', 8, 9, 9, 'Ocean Herrera', NULL, NULL, 1, NULL),
+(26, 'avdcy', 2, 9, 33, 'Eleanor Felipe', NULL, NULL, 0, NULL),
+(27, 'avdcy', 15, 9, 32, 'Kato Florencia', NULL, NULL, 1, NULL),
+(28, 'pPU58', 16, 10, 72, 'Sigourney Luis', NULL, NULL, 1, NULL),
+(29, 'pPU58', 12, 10, 13, 'Maggie Joaquin', NULL, NULL, 0, NULL),
+(30, 'pPU58', 4, 10, 24, 'Sydney Gabriel', NULL, NULL, 0, NULL),
+(31, 'szWS8', 18, 11, 54, 'Stacy Tapia', NULL, NULL, 0, NULL),
+(32, 'szWS8', 10, 11, 27, 'September Maximiliano', NULL, NULL, 0, NULL),
+(33, 'szWS8', 7, 11, 48, 'Harding Bentlee', NULL, NULL, 0, NULL),
+(34, 'sWkvj', 3, 12, 68, 'Shelly Isabella', NULL, NULL, 0, NULL),
+(35, 'sWkvj', 14, 12, 84, 'Axel Monserrat', NULL, NULL, 0, NULL),
+(36, 'sWkvj', 10, 12, 66, 'Martina Chichi', NULL, NULL, 0, NULL),
+(37, 'jMcET', 15, 13, 9, 'Oliver Bentlee', NULL, NULL, 0, NULL),
+(38, 'jMcET', 9, 13, 68, 'Karen Tomas', NULL, NULL, 0, NULL),
+(39, 'jMcET', 13, 13, 71, 'Jeremy Figueroa', NULL, NULL, 1, NULL),
+(40, 'a03g1', 6, 14, 54, 'Kirestin Vera', NULL, NULL, 0, NULL),
+(41, 'a03g1', 10, 14, 57, 'Flavia Hernandez', NULL, NULL, 0, NULL),
+(42, 'a03g1', 6, 14, 77, 'Jack Torres', NULL, NULL, 1, NULL),
+(43, 'KyaP7', 5, 15, 13, 'Erica Castillo', NULL, NULL, 1, NULL),
+(44, 'KyaP7', 8, 15, 85, 'Bianca Castillo', NULL, NULL, 1, NULL),
+(45, 'KyaP7', 1, 15, 99, 'Roary Araya', NULL, NULL, 0, NULL),
+(46, 'DSk3T', 6, 16, 58, 'Jade Testudines', NULL, NULL, 1, NULL),
+(47, 'DSk3T', 8, 16, 64, 'Arden Joaquin', NULL, NULL, 1, NULL),
+(48, 'DSk3T', 10, 16, 26, 'Malachi Reyes', NULL, NULL, 0, NULL),
+(49, 'BKcbd', 9, 17, 64, 'Brenna Flores', NULL, NULL, 1, NULL),
+(50, 'BKcbd', 5, 17, 98, 'Violet Laura', NULL, NULL, 0, NULL),
+(51, 'BKcbd', 17, 17, 85, 'Jin Vega', NULL, NULL, 0, NULL),
+(52, 'Lh2i0', 14, 18, 41, 'Davis Cristobal', NULL, NULL, 1, NULL),
+(53, 'Lh2i0', 15, 18, 64, 'Stephanie Rocio', NULL, NULL, 1, NULL),
+(54, 'Lh2i0', 16, 18, 36, 'Justine Bastian', NULL, NULL, 0, NULL),
+(55, 'HlQTy', 12, 19, 30, 'Edward Tapia', NULL, NULL, 1, NULL),
+(56, 'HlQTy', 14, 19, 71, 'Carly Camila', NULL, NULL, 1, NULL),
+(57, 'HlQTy', 6, 19, 76, 'Kiayada Ramirez', NULL, NULL, 1, NULL),
+(58, 'ghfeF', 13, 20, 62, 'Nina Diaz', NULL, NULL, 0, NULL),
+(59, 'ghfeF', 5, 20, 73, 'Grant Fernandez', NULL, NULL, 0, NULL),
+(60, 'ghfeF', 5, 20, 90, 'Bert Magdalena', NULL, NULL, 0, NULL),
+(61, 'dpmxq', 6, 21, 18, 'Britanney Vega', NULL, NULL, 1, NULL),
+(62, 'dpmxq', 3, 21, 15, 'Anthony Araya', NULL, NULL, 1, NULL),
+(63, 'dpmxq', 11, 21, 25, 'Lyle Jara', NULL, NULL, 0, NULL),
+(64, 'yFSdm', 15, 22, 73, 'Paloma Matias', NULL, NULL, 0, NULL),
+(65, 'yFSdm', 2, 22, 62, 'Keiko Jara', NULL, NULL, 1, NULL),
+(66, 'yFSdm', 2, 22, 52, 'Guy Luis', NULL, NULL, 1, NULL),
+(67, 'xjoJQ', 5, 23, 89, 'Mary Julieta', NULL, NULL, 0, NULL),
+(68, 'xjoJQ', 15, 23, 38, 'Ima Rivera', NULL, NULL, 1, NULL),
+(69, 'xjoJQ', 14, 23, 21, 'Sandra Vicente', NULL, NULL, 1, NULL),
+(70, '7wfYz', 2, 24, 65, 'Phelan Gutierrez', NULL, NULL, 0, NULL),
+(71, '7wfYz', 3, 24, 25, 'Lana Paula', NULL, NULL, 1, NULL),
+(72, '7wfYz', 16, 24, 41, 'Denton Perez', NULL, NULL, 1, NULL),
+(73, '1wAr5', 14, 25, 71, 'Griffin Martina', NULL, NULL, 0, NULL),
+(74, '1wAr5', 5, 25, 78, 'Donovan Cristobal', NULL, NULL, 0, NULL),
+(75, '1wAr5', 5, 25, 59, 'Frances Ignacio', NULL, NULL, 1, NULL),
+(76, 'hMILb', 5, 1, 45, 'Cliente de prueba', NULL, '', 1, NULL),
+(77, 'hMILb', 5, 1, 46, 'Test', NULL, '', 1, NULL),
+(78, '4wGUS', 5, 1, 46, 'Jorge', NULL, '', 1, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `productos`
+--
+
+CREATE TABLE `productos` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(50) NOT NULL,
+  `tipo_id` int(11) NOT NULL,
+  `precio` int(11) NOT NULL,
+  `stock` int(11) NOT NULL,
+  `estado` tinyint(1) NOT NULL,
+  `fecha_creacion` date NOT NULL,
+  `fecha_modificacion` date DEFAULT NULL,
+  `fecha_baja` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `productos`
+--
+
+INSERT INTO `productos` (`id`, `nombre`, `tipo_id`, `precio`, `stock`, `estado`, `fecha_creacion`, `fecha_modificacion`, `fecha_baja`) VALUES
+(1, 'Pizza', 1, 22274, 99, 1, '2023-11-12', NULL, NULL),
+(2, 'Pastas', 1, 20092, 22, 1, '2023-11-12', NULL, NULL),
+(3, 'Empanadas', 1, 4153, 76, 1, '2023-11-12', NULL, NULL),
+(4, 'Milanesas', 1, 3338, 42, 1, '2023-11-12', NULL, NULL),
+(5, 'Omelette', 1, 21011, 55, 1, '2023-11-12', NULL, NULL),
+(6, 'Sandwich', 1, 6840, 5, 1, '2023-11-12', NULL, NULL),
+(7, 'Vino', 2, 19687, 32, 1, '2023-11-12', NULL, NULL),
+(8, 'Soda', 2, 3737, 31, 1, '2023-11-12', NULL, NULL),
+(9, 'Gaseosa', 2, 21791, 78, 1, '2023-11-12', NULL, NULL),
+(10, 'Monster', 2, 2072, 93, 1, '2023-11-12', NULL, NULL),
+(11, 'Agua', 2, 10641, 78, 1, '2023-11-12', NULL, NULL),
+(12, 'Cerveza blanca', 3, 18503, 56, 1, '2023-11-12', NULL, NULL),
+(13, 'Cerveza rubia', 3, 22924, 65, 1, '2023-11-12', NULL, NULL),
+(14, 'Helado', 4, 24816, 54, 1, '2023-11-12', NULL, NULL),
+(15, 'Pastel', 4, 24348, 82, 1, '2023-11-12', NULL, NULL),
+(16, 'Tarta', 4, 15938, 83, 1, '2023-11-12', NULL, NULL),
+(17, 'Bombon', 4, 7093, 45, 1, '2023-11-12', NULL, NULL),
+(18, 'Alfajor', 4, 7277, 4, 1, '2023-11-12', NULL, NULL),
+(19, 'Pure con milanesas', 1, 6500, 70014, 1, '2023-11-14', '2023-11-14', '2023-11-14');
 
 -- --------------------------------------------------------
 
@@ -185,6 +246,29 @@ INSERT INTO `sector` (`id`, `detalle`) VALUES
 (2, 'Barra de choperas'),
 (3, 'Cocina'),
 (4, 'Candy Bar');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tipo_productos`
+--
+
+CREATE TABLE `tipo_productos` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(50) NOT NULL,
+  `fecha_baja` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `tipo_productos`
+--
+
+INSERT INTO `tipo_productos` (`id`, `nombre`, `fecha_baja`) VALUES
+(1, 'Comida', NULL),
+(2, 'Bebida', NULL),
+(3, 'Cerveza', NULL),
+(4, 'Dulce', NULL),
+(5, 'Test(2)', '2023-11-14');
 
 -- --------------------------------------------------------
 
@@ -314,9 +398,15 @@ INSERT INTO `usuarios` (`id`, `usuario`, `clave`, `sector`, `prioridad`, `fecha_
 --
 
 --
--- Indices de la tabla `mesa`
+-- Indices de la tabla `encuestas`
 --
-ALTER TABLE `mesa`
+ALTER TABLE `encuestas`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `mesas`
+--
+ALTER TABLE `mesas`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -326,9 +416,21 @@ ALTER TABLE `pedidos`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `productos`
+--
+ALTER TABLE `productos`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `sector`
 --
 ALTER TABLE `sector`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `tipo_productos`
+--
+ALTER TABLE `tipo_productos`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -342,22 +444,40 @@ ALTER TABLE `usuarios`
 --
 
 --
--- AUTO_INCREMENT de la tabla `mesa`
+-- AUTO_INCREMENT de la tabla `encuestas`
 --
-ALTER TABLE `mesa`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+ALTER TABLE `encuestas`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT de la tabla `mesas`
+--
+ALTER TABLE `mesas`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `pedidos`
 --
 ALTER TABLE `pedidos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
+
+--
+-- AUTO_INCREMENT de la tabla `productos`
+--
+ALTER TABLE `productos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT de la tabla `sector`
 --
 ALTER TABLE `sector`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT de la tabla `tipo_productos`
+--
+ALTER TABLE `tipo_productos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
