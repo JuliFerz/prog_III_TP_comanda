@@ -11,7 +11,7 @@ class PedidoController implements IApiUsable
         $pedidosPorUsuario = isset($queryParams['usuario'])
             ? $queryParams['usuario']
             : false;
-        if($pedidosPorUsuario){
+        if ($pedidosPorUsuario) {
             $lista = Pedido::obtenerTodosPorUsuario($pedidosPorUsuario);
         } else {
             $lista = Pedido::obtenerTodos();
@@ -42,33 +42,42 @@ class PedidoController implements IApiUsable
 
     public function CargarUno($request, $response, $args)
     {
-        $parametros = $request->getParsedBody();
-        $codigoPedido = $parametros['codigo_pedido'];
-        $idProducto = $parametros['id_producto'];
-        $idMesa = $parametros['id_mesa'];
-        $idUsuario = $parametros['id_usuario'];
-        $nombreCliente = $parametros['nombre_cliente'];
-        $descripcion = $parametros['descripcion'] ?? '';
-        $foto = $parametros['foto'] ?? '';
-        $estado = $parametros['estado'] ?? 1;
+        try {
+            $parametros = $request->getParsedBody();
+            // $codigoPedido = PedidoController::GenerarCodigo(5);
+            $codigoPedido = isset($parametros['codigo_pedido'])
+                ? $parametros['codigo_pedido']
+                : PedidoController::GenerarCodigo(5);
+            PedidoController::ValidarCodigo($codigoPedido);
+            $idProducto = $parametros['id_producto'];
+            $idMesa = $parametros['id_mesa'];
+            $idUsuario = $parametros['id_usuario'];
+            $nombreCliente = $parametros['nombre_cliente'];
+            $descripcion = $parametros['descripcion'] ?? '';
+            $foto = $parametros['foto'] ?? '';
+            $estado = $parametros['estado'] ?? 1;
 
-        $pedido = new Pedido();
-        $pedido->setCodigoPedido($codigoPedido);
-        $pedido->setIdProducto($idProducto);
-        $pedido->setIdMesa($idMesa);
-        $pedido->setIdUsuario($idUsuario);
-        $pedido->setNombreCliente($nombreCliente);
-        $pedido->setFoto($foto);
-        $pedido->setDescripcion($descripcion);
-        $pedido->setEstado($estado);
-        $res = $pedido->crearPedido();
-        if (!$res) {
-            $payload = json_encode(array("mensaje" => "El codigo de pedido $codigoPedido se encuentra dado de baja."));
-        } else {
-            $payload = json_encode(array("mensaje" => "Pedido $res creado con exito"));
+            $pedido = new Pedido();
+            $pedido->setCodigoPedido($codigoPedido);
+            $pedido->setIdProducto($idProducto);
+            $pedido->setIdMesa($idMesa);
+            $pedido->setIdUsuario($idUsuario);
+            $pedido->setNombreCliente($nombreCliente);
+            $pedido->setFoto($foto);
+            $pedido->setDescripcion($descripcion);
+            $pedido->setEstado($estado);
+            $res = $pedido->crearPedido();
+            if (!$res) {
+                $payload = json_encode(array("mensaje" => "El codigo de pedido $codigoPedido se encuentra dado de baja."));
+            } else {
+                $payload = json_encode(array("mensaje" => "Pedido $res creado con exito"));
+            }
+        } catch (Exception $err) {
+            $payload = json_encode(array("error" => $err->getMessage()));
+        } finally {
+            $response->getBody()->write($payload);
+            return $response->withHeader('Content-Type', 'application/json');
         }
-        $response->getBody()->write($payload);
-        return $response->withHeader('Content-Type', 'application/json');
     }
 
     public function ModificarUno($request, $response, $args)
@@ -76,7 +85,6 @@ class PedidoController implements IApiUsable
         $parametros = $request->getParsedBody();
 
         $id = $args['pedido'];
-        $codigoPedido = $parametros['codigo_pedido'];
         $idProducto = $parametros['id_producto'];
         $idMesa = $parametros['id_mesa'];
         $idUsuario = $parametros['id_usuario'];
@@ -86,7 +94,6 @@ class PedidoController implements IApiUsable
 
         $pedido = new Pedido();
         $pedido->setId($id);
-        $pedido->setCodigoPedido((int) $codigoPedido);
         $pedido->setIdProducto((int) $idProducto);
         $pedido->setIdMesa((int) $idMesa);
         $pedido->setIdUsuario((int) $idUsuario);
@@ -136,11 +143,26 @@ class PedidoController implements IApiUsable
             } else {
                 $payload = json_encode(array("mensaje" => "Foto subida al pedido con exito"));
             }
-        } catch (Exception $err){
+        } catch (Exception $err) {
             $payload = json_encode(['error' => $err->getMessage()]);
         } finally {
             $response->getBody()->write($payload);
             return $response->withHeader('Content-Type', 'application/json');
+        }
+    }
+
+    public static function GenerarCodigo($length)
+    {
+        $chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        $chars .= "abcdefghijklmnopqrstuvwxyz";
+        $chars .= "0123456789";
+        return substr(str_shuffle($chars), 0, $length);
+    }
+
+    public static function ValidarCodigo($codigo)
+    {
+        if (!preg_match('/^[a-zA-Z0-9]+$/', $codigo) || strlen($codigo) != 5) {
+            throw new Exception('El codigo debe ser alfanumerico y de 5 caracteres de longitud.');
         }
     }
 }

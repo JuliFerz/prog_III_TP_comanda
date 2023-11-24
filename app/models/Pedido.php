@@ -5,7 +5,7 @@ require_once('./controllers/FileController.php');
 class Pedido {
     private string $_PATH = './images/pedidos/';
     private int $_id;
-    private int $_codigoPedido;
+    private string $_codigoPedido;
     private int $_idProducto;
     private int $_idMesa;
     private int $_idUsuario;
@@ -90,12 +90,11 @@ class Pedido {
     public function modificarPedido()
     {
         $bdPedido = Pedido::obtenerPedidoPorId($this->_id);
-        if (!$bdPedido /* || ($bdPedido && $bdPedido->codigo_pedido < $this->_codigoPedido) */){ 
+        if (!$bdPedido){ 
             return false;
         }
         $objAccesoDato = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDato->prepararConsulta("UPDATE pedidos SET 
-            -- codigo_pedido = :codigo_pedido,
             id_producto = :id_producto,
             id_mesa = :id_mesa,
             id_usuario = :id_usuario,
@@ -103,7 +102,6 @@ class Pedido {
             estado = :estado
             WHERE id = :id");
         $consulta->bindValue(':id', $this->_id, PDO::PARAM_INT);
-        // $consulta->bindValue(':codigo_pedido', $this->_codigoPedido, PDO::PARAM_STR);
         $consulta->bindValue(':id_producto', $this->_idProducto, PDO::PARAM_INT);
         $consulta->bindValue(':id_mesa', $this->_idMesa, PDO::PARAM_STR);
         $consulta->bindValue(':id_usuario', $this->_idUsuario, PDO::PARAM_STR);
