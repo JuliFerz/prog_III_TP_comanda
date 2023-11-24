@@ -41,13 +41,13 @@ $app->group('/usuarios', function (RouteCollectorProxy $group) {
 });
 
 $app->group('/pedidos', function (RouteCollectorProxy $group) {
+    $group->get('/disponibles', \PedidoController::class . ':TraerDisponibles');
     $group->get('[/]', \PedidoController::class . ':TraerTodos');
     $group->get('/{pedido}', \PedidoController::class . ':TraerUno');
     $group->post('[/]', \PedidoController::class . ':CargarUno');
     $group->put('/{pedido}', \PedidoController::class . ':ModificarUno');
     $group->delete('/{pedido}', \PedidoController::class . ':BorrarUno');
     $group->post('/{pedido}/tomarFoto', \PedidoController::class . ':TomarFoto');
-    // $group->get('/disponibles', \PedidoController::class . ':TraerDisponibles');
 });
 
 $app->group('/productos', function (RouteCollectorProxy $group) {

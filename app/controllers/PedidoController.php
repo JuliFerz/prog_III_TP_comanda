@@ -20,6 +20,15 @@ class PedidoController implements IApiUsable
         $response->getBody()->write($payload);
         return $response->withHeader('Content-Type', 'application/json');
     }
+    public function TraerDisponibles($request, $response, $args)
+    {
+        $queryParams = $request->getQueryParams();
+        $id = $queryParams['usuario'];
+        $lista = Pedido::obtenerDisponibles($id);
+        $payload = json_encode(["listaPedidosDisponibles" => $lista]);
+        $response->getBody()->write($payload);
+        return $response->withHeader('Content-Type', 'application/json');
+    }
 
     public function TraerUno($request, $response, $args)
     {

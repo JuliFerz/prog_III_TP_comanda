@@ -24,6 +24,19 @@ class Pedido {
 
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Pedido');
     }
+    public static function obtenerDisponibles($id)
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM pedidos pe
+        INNER JOIN productos pr ON pe.id_producto = pr.id
+        WHERE pr.id_sector = 
+            (select id_sector from usuarios where id = :id) 
+        AND pe.estado = 'pendiente'");
+        $consulta->bindValue(':id', $id, PDO::PARAM_INT);
+        $consulta->execute();
+
+        return $consulta->fetchAll(PDO::FETCH_CLASS, 'Pedido');
+    }
 
     public static function obtenerTodosPorUsuario($id)
     {
