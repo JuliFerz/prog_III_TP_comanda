@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 24-11-2023 a las 04:16:09
+-- Tiempo de generación: 24-11-2023 a las 05:07:41
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.0.28
 
@@ -189,7 +189,7 @@ INSERT INTO `pedidos` (`id`, `codigo_pedido`, `id_producto`, `id_mesa`, `id_usua
 CREATE TABLE `productos` (
   `id` int(11) NOT NULL,
   `nombre` varchar(50) NOT NULL,
-  `tipo_id` int(11) NOT NULL,
+  `id_sector` int(11) NOT NULL,
   `precio` int(11) NOT NULL,
   `stock` int(11) NOT NULL,
   `estado` tinyint(1) NOT NULL,
@@ -202,47 +202,51 @@ CREATE TABLE `productos` (
 -- Volcado de datos para la tabla `productos`
 --
 
-INSERT INTO `productos` (`id`, `nombre`, `tipo_id`, `precio`, `stock`, `estado`, `fecha_creacion`, `fecha_modificacion`, `fecha_baja`) VALUES
+INSERT INTO `productos` (`id`, `nombre`, `id_sector`, `precio`, `stock`, `estado`, `fecha_creacion`, `fecha_modificacion`, `fecha_baja`) VALUES
 (1, 'Pizza', 1, 22274, 99, 1, '2023-11-12', NULL, NULL),
 (2, 'Pastas', 1, 20092, 22, 1, '2023-11-12', NULL, NULL),
 (3, 'Empanadas', 1, 4153, 76, 1, '2023-11-12', NULL, NULL),
 (4, 'Milanesas', 1, 3338, 42, 1, '2023-11-12', NULL, NULL),
 (5, 'Omelette', 1, 21011, 55, 1, '2023-11-12', NULL, NULL),
 (6, 'Sandwich', 1, 6840, 5, 1, '2023-11-12', NULL, NULL),
-(7, 'Vino', 2, 19687, 32, 1, '2023-11-12', NULL, NULL),
-(8, 'Soda', 2, 3737, 31, 1, '2023-11-12', NULL, NULL),
-(9, 'Gaseosa', 2, 21791, 78, 1, '2023-11-12', NULL, NULL),
-(10, 'Monster', 2, 2072, 93, 1, '2023-11-12', NULL, NULL),
-(11, 'Agua', 2, 10641, 78, 1, '2023-11-12', NULL, NULL),
-(12, 'Cerveza blanca', 3, 18503, 56, 1, '2023-11-12', NULL, NULL),
-(13, 'Cerveza rubia', 3, 22924, 65, 1, '2023-11-12', NULL, NULL),
-(14, 'Helado', 4, 24816, 54, 1, '2023-11-12', NULL, NULL),
-(15, 'Pastel', 4, 24348, 82, 1, '2023-11-12', NULL, NULL),
-(16, 'Tarta', 4, 15938, 83, 1, '2023-11-12', NULL, NULL),
-(17, 'Bombon', 4, 7093, 45, 1, '2023-11-12', NULL, NULL),
-(18, 'Alfajor', 4, 7277, 4, 1, '2023-11-12', NULL, NULL),
-(19, 'Pure con milanesas', 1, 6500, 70014, 1, '2023-11-14', '2023-11-14', '2023-11-14');
+(7, 'Helado', 1, 24816, 54, 1, '2023-11-12', NULL, NULL),
+(8, 'Pastel', 1, 24348, 82, 1, '2023-11-12', NULL, NULL),
+(9, 'Tarta', 1, 15938, 83, 1, '2023-11-12', NULL, NULL),
+(10, 'Bombon', 1, 7093, 45, 1, '2023-11-12', NULL, NULL),
+(11, 'Alfajor', 1, 7277, 4, 1, '2023-11-12', NULL, NULL),
+(12, 'Vino', 2, 19687, 32, 1, '2023-11-12', NULL, NULL),
+(13, 'Soda', 2, 3737, 31, 1, '2023-11-12', NULL, NULL),
+(14, 'Gaseosa', 2, 21791, 78, 1, '2023-11-12', NULL, NULL),
+(15, 'Monster', 2, 2072, 93, 1, '2023-11-12', NULL, NULL),
+(16, 'Agua', 2, 10641, 78, 1, '2023-11-12', NULL, NULL),
+(17, 'Cerveza blanca', 3, 18503, 56, 1, '2023-11-12', NULL, NULL),
+(18, 'Cerveza rubia', 3, 22924, 65, 1, '2023-11-12', NULL, NULL),
+(19, 'Pure con milanesa', 1, 6500, 70014, 1, '2023-11-24', '2023-11-24', '2023-11-24');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `sector`
+-- Estructura de tabla para la tabla `sectores`
 --
 
-CREATE TABLE `sector` (
+CREATE TABLE `sectores` (
   `id` int(11) NOT NULL,
-  `detalle` varchar(20) NOT NULL
+  `detalle` varchar(20) NOT NULL,
+  `fecha_baja` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `sector`
+-- Volcado de datos para la tabla `sectores`
 --
 
-INSERT INTO `sector` (`id`, `detalle`) VALUES
-(1, 'Cocinero'),
-(2, 'Bartender'),
-(3, 'Cervecero'),
-(4, 'Candy Bar');
+INSERT INTO `sectores` (`id`, `detalle`, `fecha_baja`) VALUES
+(1, 'Cocinero', NULL),
+(2, 'Bartender', NULL),
+(3, 'Cervecero', NULL),
+(4, 'Mozo', NULL),
+(5, 'Socio', NULL),
+(6, 'Admin', NULL),
+(7, 'Test(2)', '2023-11-24');
 
 -- --------------------------------------------------------
 
@@ -277,7 +281,7 @@ CREATE TABLE `usuarios` (
   `id` int(11) NOT NULL,
   `usuario` varchar(50) NOT NULL,
   `clave` varchar(50) NOT NULL,
-  `sector` varchar(25) NOT NULL,
+  `id_sector` int(11) NOT NULL,
   `prioridad` int(1) NOT NULL,
   `fecha_baja` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -286,109 +290,108 @@ CREATE TABLE `usuarios` (
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`id`, `usuario`, `clave`, `sector`, `prioridad`, `fecha_baja`) VALUES
-(1, 'admin', 'admin', 'admin', 3, NULL),
-(2, 'Cairo', 'KUF53QYT3TL', 'bartender', 1, NULL),
-(3, 'Ina', 'XSU83MPV5FU', 'cervecero', 1, NULL),
-(4, 'Marvin', 'WUW10BNG6WK', 'cocinero', 1, NULL),
-(5, 'Venus', 'ZEX43IBW3FJ', 'mozo', 1, NULL),
-(6, 'Irene', 'RWK09SMM2YX', 'bartender', 1, NULL),
-(7, 'Jane', 'QOI44VHL5UX', 'cervecero', 1, NULL),
-(8, 'Walter', 'FQI61KWJ0DT', 'cocinero', 1, NULL),
-(9, 'Vivian', 'EYL82MQP2LL', 'mozo', 1, NULL),
-(10, 'Nelle', 'HGZ57PRN5YT', 'bartender', 1, NULL),
-(11, 'Nathan', 'SSL33SRS4JG', 'cervecero', 1, NULL),
-(12, 'Pascale', 'OQT09LBW2QX', 'cocinero', 1, NULL),
-(13, 'Cassandra', 'RMD84EPR4ED', 'mozo', 1, NULL),
-(14, 'Uta', 'UUK88HJM4FU', 'bartender', 1, NULL),
-(15, 'Mira', 'PYP42NDD1BM', 'cervecero', 1, NULL),
-(16, 'Paula', 'ZLZ54CPH8KW', 'cocinero', 1, NULL),
-(17, 'Gannon', 'OVM28JEZ3ID', 'mozo', 1, NULL),
-(18, 'Jacqueline', 'CDT50FUY4GG', 'bartender', 1, NULL),
-(19, 'Vernon', 'HUU64MBB8YE', 'cervecero', 1, NULL),
-(20, 'Cailin', 'OLP67INN2UI', 'cocinero', 1, NULL),
-(21, 'Alika', 'CFN96ASY2WO', 'mozo', 1, NULL),
-(22, 'Tallulah', 'WRJ35KRU8VK', 'bartender', 1, NULL),
-(23, 'Noel', 'CMS26KWU1FG', 'cervecero', 1, NULL),
-(24, 'Daquan', 'DTC75XSE3GR', 'cocinero', 1, NULL),
-(25, 'Jena', 'IRU51YBI7PH', 'mozo', 1, NULL),
-(26, 'Geraldine', 'CER92ILI7RH', 'bartender', 1, NULL),
-(27, 'MacKensie', 'LCY26EVL5QH', 'cervecero', 1, NULL),
-(28, 'Amela', 'PQQ53MMB2JD', 'cocinero', 1, NULL),
-(29, 'Dillon', 'BQG35EWE7KK', 'mozo', 1, NULL),
-(30, 'Kuame', 'WIG42KBY2QG', 'bartender', 1, NULL),
-(31, 'Inez', 'LFD41EJX8LT', 'cervecero', 1, NULL),
-(32, 'Yardley', 'BON82TKP8UL', 'cocinero', 1, NULL),
-(33, 'Germane', 'SMH41ING2BV', 'mozo', 1, NULL),
-(34, 'Rooney', 'YNI31PYE7UH', 'bartender', 1, NULL),
-(35, 'Upton', 'WMW26QDV9QP', 'cervecero', 1, NULL),
-(36, 'Jonas', 'YKH06QNQ9UI', 'cocinero', 1, NULL),
-(37, 'Kim', 'JLT18TGB9XO', 'mozo', 1, NULL),
-(38, 'Liberty', 'IYK43UBU5WS', 'bartender', 1, NULL),
-(39, 'Upton', 'XVT62KES0SC', 'cervecero', 1, NULL),
-(40, 'Shellie', 'RJK28GHH4ED', 'cocinero', 1, NULL),
-(41, 'Boris', 'ZKP26DNB0YJ', 'mozo', 1, NULL),
-(42, 'Remedios', 'LYN54LPX6EJ', 'bartender', 1, NULL),
-(43, 'Aiko', 'OXQ66XTX9PU', 'cervecero', 1, NULL),
-(44, 'Macy', 'IXH64XJM9GT', 'cocinero', 1, NULL),
-(45, 'Leslie', 'XQT63BAY1VB', 'mozo', 1, NULL),
-(46, 'Peter', 'YYL28LCW0TF', 'bartender', 1, NULL),
-(47, 'Mechelle', 'SOF57GTT7HD', 'cervecero', 1, NULL),
-(48, 'Maisie', 'NZJ18FXW2NY', 'cocinero', 1, NULL),
-(49, 'Steel', 'HRJ93FIN6HD', 'mozo', 1, NULL),
-(50, 'Dolan', 'HEY89DLR3IU', 'bartender', 1, NULL),
-(51, 'Sarah', 'IGK31BSL6QF', 'cervecero', 1, NULL),
-(52, 'Angelica', 'FEH46YDS4CC', 'cocinero', 1, NULL),
-(53, 'Mary', 'OYD32XWU1JN', 'mozo', 1, NULL),
-(54, 'Eaton', 'IXP32CUB3UX', 'bartender', 1, NULL),
-(55, 'Desiree', 'MGO85UXK5FG', 'cervecero', 1, NULL),
-(56, 'Pamela', 'SNL27XLG1PF', 'cocinero', 1, NULL),
-(57, 'Hyatt', 'NHI96QHI2TV', 'mozo', 1, NULL),
-(58, 'Zephr', 'DPC33RPF6PG', 'bartender', 1, NULL),
-(59, 'Freya', 'YNG46RZW2BW', 'cervecero', 1, NULL),
-(60, 'Buffy', 'QMP25LCU4VE', 'cocinero', 1, NULL),
-(61, 'Aiko', 'FFN65ECE3KV', 'mozo', 1, NULL),
-(62, 'Joseph', 'NRQ99DGU2HC', 'bartender', 1, NULL),
-(63, 'Sasha', 'EBN41IUF7XO', 'cervecero', 1, NULL),
-(64, 'Heather', 'LMA21NJT8ZY', 'cocinero', 1, NULL),
-(65, 'Clinton', 'JVC57IMH2MK', 'mozo', 1, NULL),
-(66, 'Roanna', 'WSE25NPT7VN', 'bartender', 1, NULL),
-(67, 'Alec', 'QJQ80JZO6OC', 'cervecero', 1, NULL),
-(68, 'Plato', 'SPJ63GVF3BA', 'cocinero', 1, NULL),
-(69, 'Lydia', 'GRB57EKD8SQ', 'mozo', 1, NULL),
-(70, 'Cassandra', 'OTV88AAU5IG', 'bartender', 1, NULL),
-(71, 'Candice', 'SSR16FXY7RD', 'cervecero', 1, NULL),
-(72, 'Travis', 'LBM28DJS8UR', 'cocinero', 1, NULL),
-(73, 'Lana', 'OFX18WDN9FY', 'mozo', 1, NULL),
-(74, 'Otto', 'CGG42HRR2CG', 'bartender', 1, NULL),
-(75, 'Steel', 'SWJ51LQQ8CF', 'cervecero', 1, NULL),
-(76, 'Gregory', 'FCN21GHI1FG', 'cocinero', 1, NULL),
-(77, 'Jena', 'PGI76VWY0VR', 'mozo', 1, NULL),
-(78, 'Samuel', 'GKI07XMF8YQ', 'bartender', 1, NULL),
-(79, 'Denton', 'VVP45UBH5CP', 'cervecero', 1, NULL),
-(80, 'Ronan', 'VRX08OQZ3VY', 'cocinero', 1, NULL),
-(81, 'Lysandra', 'FMI16AVS5FX', 'mozo', 1, NULL),
-(82, 'Hilel', 'IXP91WUH6TR', 'bartender', 1, NULL),
-(83, 'Zelda', 'BDP69UHJ0WQ', 'cervecero', 1, NULL),
-(84, 'Shad', 'MTY52FRW1EJ', 'cocinero', 1, NULL),
-(85, 'Ryan', 'IFG65GLN5XU', 'mozo', 1, NULL),
-(86, 'Edward', 'ZML59OVN1RB', 'bartender', 1, NULL),
-(87, 'Gloria', 'QDM81EOO9RT', 'cervecero', 1, NULL),
-(88, 'Tate', 'IIG22KUE3VF', 'cocinero', 1, NULL),
-(89, 'Lillian', 'NXI81EYP4SM', 'mozo', 1, NULL),
-(90, 'Juliet', 'FOJ32MTT4HP', 'bartender', 1, NULL),
-(91, 'Darrel', 'LSS36OPM1SO', 'cervecero', 1, NULL),
-(92, 'Mufutau', 'QTD28MPO8OD', 'cocinero', 1, NULL),
-(93, 'Oprah', 'BMJ74OOE5WX', 'mozo', 1, NULL),
-(94, 'Silas', 'TGR44CND4MN', 'bartender', 1, NULL),
-(95, 'Holmes', 'BJK17LTU6NQ', 'cervecero', 1, NULL),
-(96, 'Brynne', 'SYJ31UQO0KV', 'cocinero', 1, NULL),
-(97, 'Igor', 'FHJ44TOW6JG', 'mozo', 1, NULL),
-(98, 'Lunea', 'TVF60BLE8QQ', 'bartender', 1, NULL),
-(99, 'Rama', 'LQM54XOR5CP', 'cervecero', 1, NULL),
-(100, 'Beverly', 'EEY98EAX8LX', 'cocinero', 1, NULL),
-(101, 'Kieran', 'DYD03UYL2DU', 'mozo', 1, NULL),
-(102, 'Testing', 'test123', 'cocinero', 1, '2023-11-11');
+INSERT INTO `usuarios` (`id`, `usuario`, `clave`, `id_sector`, `prioridad`, `fecha_baja`) VALUES
+(1, 'admin', 'admin', 6, 3, NULL),
+(2, 'Cairo', 'KUF53QYT3TL', 3, 1, NULL),
+(3, 'Ina', 'XSU83MPV5FU', 3, 1, NULL),
+(4, 'Marvin', 'WUW10BNG6WK', 3, 1, NULL),
+(5, 'Venus', 'ZEX43IBW3FJ', 2, 1, NULL),
+(6, 'Irene', 'RWK09SMM2YX', 4, 1, NULL),
+(7, 'Jane', 'QOI44VHL5UX', 1, 1, NULL),
+(8, 'Walter', 'FQI61KWJ0DT', 2, 1, NULL),
+(9, 'Vivian', 'EYL82MQP2LL', 3, 1, NULL),
+(10, 'Nelle', 'HGZ57PRN5YT', 3, 1, NULL),
+(11, 'Nathan', 'SSL33SRS4JG', 1, 1, NULL),
+(12, 'Pascale', 'OQT09LBW2QX', 3, 1, NULL),
+(13, 'Cassandra', 'RMD84EPR4ED', 1, 1, NULL),
+(14, 'Uta', 'UUK88HJM4FU', 4, 1, NULL),
+(15, 'Mira', 'PYP42NDD1BM', 1, 1, NULL),
+(16, 'Paula', 'ZLZ54CPH8KW', 2, 1, NULL),
+(17, 'Gannon', 'OVM28JEZ3ID', 1, 1, NULL),
+(18, 'Jacqueline', 'CDT50FUY4GG', 3, 1, NULL),
+(19, 'Vernon', 'HUU64MBB8YE', 3, 1, NULL),
+(20, 'Cailin', 'OLP67INN2UI', 4, 1, NULL),
+(21, 'Alika', 'CFN96ASY2WO', 2, 1, NULL),
+(22, 'Tallulah', 'WRJ35KRU8VK', 1, 1, NULL),
+(23, 'Noel', 'CMS26KWU1FG', 3, 1, NULL),
+(24, 'Daquan', 'DTC75XSE3GR', 3, 1, NULL),
+(25, 'Jena', 'IRU51YBI7PH', 1, 1, NULL),
+(26, 'Geraldine', 'CER92ILI7RH', 1, 1, NULL),
+(27, 'MacKensie', 'LCY26EVL5QH', 3, 1, NULL),
+(28, 'Amela', 'PQQ53MMB2JD', 4, 1, NULL),
+(29, 'Dillon', 'BQG35EWE7KK', 2, 1, NULL),
+(30, 'Kuame', 'WIG42KBY2QG', 3, 1, NULL),
+(31, 'Inez', 'LFD41EJX8LT', 1, 1, NULL),
+(32, 'Yardley', 'BON82TKP8UL', 3, 1, NULL),
+(33, 'Germane', 'SMH41ING2BV', 3, 1, NULL),
+(34, 'Rooney', 'YNI31PYE7UH', 3, 1, NULL),
+(35, 'Upton', 'WMW26QDV9QP', 3, 1, NULL),
+(36, 'Jonas', 'YKH06QNQ9UI', 3, 1, NULL),
+(37, 'Kim', 'JLT18TGB9XO', 1, 1, NULL),
+(38, 'Liberty', 'IYK43UBU5WS', 4, 1, NULL),
+(39, 'Upton', 'XVT62KES0SC', 1, 1, NULL),
+(40, 'Shellie', 'RJK28GHH4ED', 4, 1, NULL),
+(41, 'Boris', 'ZKP26DNB0YJ', 2, 1, NULL),
+(42, 'Remedios', 'LYN54LPX6EJ', 2, 1, NULL),
+(43, 'Aiko', 'OXQ66XTX9PU', 3, 1, NULL),
+(44, 'Macy', 'IXH64XJM9GT', 1, 1, NULL),
+(45, 'Leslie', 'XQT63BAY1VB', 4, 1, NULL),
+(46, 'Peter', 'YYL28LCW0TF', 3, 1, NULL),
+(47, 'Mechelle', 'SOF57GTT7HD', 2, 1, NULL),
+(48, 'Maisie', 'NZJ18FXW2NY', 4, 1, NULL),
+(49, 'Steel', 'HRJ93FIN6HD', 4, 1, NULL),
+(50, 'Dolan', 'HEY89DLR3IU', 3, 1, NULL),
+(51, 'Sarah', 'IGK31BSL6QF', 1, 1, NULL),
+(52, 'Angelica', 'FEH46YDS4CC', 4, 1, NULL),
+(53, 'Mary', 'OYD32XWU1JN', 1, 1, NULL),
+(54, 'Eaton', 'IXP32CUB3UX', 4, 1, NULL),
+(55, 'Desiree', 'MGO85UXK5FG', 4, 1, NULL),
+(56, 'Pamela', 'SNL27XLG1PF', 3, 1, NULL),
+(57, 'Hyatt', 'NHI96QHI2TV', 2, 1, NULL),
+(58, 'Zephr', 'DPC33RPF6PG', 3, 1, NULL),
+(59, 'Freya', 'YNG46RZW2BW', 4, 1, NULL),
+(60, 'Buffy', 'QMP25LCU4VE', 4, 1, NULL),
+(61, 'Aiko', 'FFN65ECE3KV', 1, 1, NULL),
+(62, 'Joseph', 'NRQ99DGU2HC', 4, 1, NULL),
+(63, 'Sasha', 'EBN41IUF7XO', 4, 1, NULL),
+(64, 'Heather', 'LMA21NJT8ZY', 2, 1, NULL),
+(65, 'Clinton', 'JVC57IMH2MK', 2, 1, NULL),
+(66, 'Roanna', 'WSE25NPT7VN', 3, 1, NULL),
+(67, 'Alec', 'QJQ80JZO6OC', 2, 1, NULL),
+(68, 'Plato', 'SPJ63GVF3BA', 2, 1, NULL),
+(69, 'Lydia', 'GRB57EKD8SQ', 1, 1, NULL),
+(70, 'Cassandra', 'OTV88AAU5IG', 3, 1, NULL),
+(71, 'Candice', 'SSR16FXY7RD', 3, 1, NULL),
+(72, 'Travis', 'LBM28DJS8UR', 3, 1, NULL),
+(73, 'Lana', 'OFX18WDN9FY', 1, 1, NULL),
+(74, 'Otto', 'CGG42HRR2CG', 1, 1, NULL),
+(75, 'Steel', 'SWJ51LQQ8CF', 3, 1, NULL),
+(76, 'Gregory', 'FCN21GHI1FG', 4, 1, NULL),
+(77, 'Jena', 'PGI76VWY0VR', 1, 1, NULL),
+(78, 'Samuel', 'GKI07XMF8YQ', 3, 1, NULL),
+(79, 'Denton', 'VVP45UBH5CP', 4, 1, NULL),
+(80, 'Ronan', 'VRX08OQZ3VY', 2, 1, NULL),
+(81, 'Lysandra', 'FMI16AVS5FX', 3, 1, NULL),
+(82, 'Hilel', 'IXP91WUH6TR', 4, 1, NULL),
+(83, 'Zelda', 'BDP69UHJ0WQ', 4, 1, NULL),
+(84, 'Shad', 'MTY52FRW1EJ', 4, 1, NULL),
+(85, 'Ryan', 'IFG65GLN5XU', 3, 1, NULL),
+(86, 'Edward', 'ZML59OVN1RB', 3, 1, NULL),
+(87, 'Gloria', 'QDM81EOO9RT', 1, 1, NULL),
+(88, 'Tate', 'IIG22KUE3VF', 1, 1, NULL),
+(89, 'Lillian', 'NXI81EYP4SM', 2, 1, NULL),
+(90, 'Juliet', 'FOJ32MTT4HP', 1, 1, NULL),
+(91, 'Darrel', 'LSS36OPM1SO', 1, 1, NULL),
+(92, 'Mufutau', 'QTD28MPO8OD', 1, 1, NULL),
+(93, 'Oprah', 'BMJ74OOE5WX', 2, 1, NULL),
+(94, 'Silas', 'TGR44CND4MN', 3, 1, NULL),
+(95, 'Holmes', 'BJK17LTU6NQ', 2, 1, NULL),
+(96, 'Brynne', 'SYJ31UQO0KV', 2, 1, NULL),
+(97, 'Igor', 'FHJ44TOW6JG', 3, 1, NULL),
+(98, 'Lunea', 'TVF60BLE8QQ', 4, 1, NULL),
+(99, 'Rama', 'LQM54XOR5CP', 2, 1, NULL),
+(100, 'Beverly', 'EEY98EAX8LX', 2, 1, NULL),
+(101, 'Kieran', 'DYD03UYL2DU', 2, 1, NULL);
 
 --
 -- Índices para tablas volcadas
@@ -419,9 +422,9 @@ ALTER TABLE `productos`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `sector`
+-- Indices de la tabla `sectores`
 --
-ALTER TABLE `sector`
+ALTER TABLE `sectores`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -465,10 +468,10 @@ ALTER TABLE `productos`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
--- AUTO_INCREMENT de la tabla `sector`
+-- AUTO_INCREMENT de la tabla `sectores`
 --
-ALTER TABLE `sector`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+ALTER TABLE `sectores`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `tipo_productos`
@@ -480,7 +483,7 @@ ALTER TABLE `tipo_productos`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=103;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

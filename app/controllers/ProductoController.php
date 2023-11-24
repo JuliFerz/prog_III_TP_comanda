@@ -36,7 +36,7 @@ class ProductoController implements IApiUsable
     {
         $parametros = $request->getParsedBody();
         $nombre = $parametros['nombre'];
-        $tipo_id = $parametros['tipo_id'];
+        $idSector = $parametros['id_sector'];
         $precio = $parametros['precio'];
         $stock = $parametros['stock'];
         $estado = $parametros['estado'] ?? 1;
@@ -44,7 +44,7 @@ class ProductoController implements IApiUsable
 
         $producto = new Producto();
         $producto->setNombre($nombre);
-        $producto->setTipoId($tipo_id);
+        $producto->setIdSector($idSector);
         $producto->setPrecio($precio);
         $producto->setStock($stock);
         $producto->setEstado($estado);
@@ -61,7 +61,7 @@ class ProductoController implements IApiUsable
 
         $id = $args['producto'];
         $nombre = $parametros['nombre'];
-        $tipo_id = $parametros['tipo_id'];
+        $idSector = $parametros['id_sector'];
         $precio = $parametros['precio'];
         $stock = $parametros['stock'];
         $estado = $parametros['estado'] ?? 1;
@@ -69,7 +69,7 @@ class ProductoController implements IApiUsable
         $producto = new Producto();
         $producto->setId($id);
         $producto->setNombre($nombre);
-        $producto->setTipoId($tipo_id);
+        $producto->setIdSector($idSector);
         $producto->setPrecio($precio);
         $producto->setStock($stock);
         $producto->setEstado($estado);

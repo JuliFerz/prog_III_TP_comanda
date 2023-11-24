@@ -3,7 +3,7 @@
 class Producto {
     private int $_id;
     private string $_nombre;
-    private int $_tipoId;
+    private int $_idSector;
     private int $_precio;
     private int $_stock;
     private bool $_estado;
@@ -34,7 +34,7 @@ class Producto {
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM productos
-            WHERE tipo_id = (SELECT tipo_id FROM productos WHERE id = :id)");
+            WHERE id_sector = (SELECT id_sector FROM productos WHERE id = :id)");
         $consulta->bindValue(':id', $id, PDO::PARAM_INT);
         $consulta->execute();
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Producto');
@@ -57,10 +57,10 @@ class Producto {
             return false;
         } */
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO productos (nombre, tipo_id, precio, stock, estado, fecha_creacion) 
-            VALUES (:nombre, :tipo_id, :precio, :stock, :estado, :fecha_creacion)");
+        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO productos (nombre, id_sector, precio, stock, estado, fecha_creacion) 
+            VALUES (:nombre, :id_sector, :precio, :stock, :estado, :fecha_creacion)");
         $consulta->bindValue(':nombre', $this->_nombre, PDO::PARAM_STR);
-        $consulta->bindValue(':tipo_id', $this->_tipoId, PDO::PARAM_INT);
+        $consulta->bindValue(':id_sector', $this->_idSector, PDO::PARAM_INT);
         $consulta->bindValue(':precio', $this->_precio, PDO::PARAM_INT);
         $consulta->bindValue(':stock', $this->_stock, PDO::PARAM_INT);
         $consulta->bindValue(':estado', $this->_estado, PDO::PARAM_BOOL);
@@ -117,8 +117,8 @@ class Producto {
     public function getNombre(){
         return $this->_nombre;
     }
-    public function getTipoId(){
-        return $this->_tipoId;
+    public function getIdSector(){
+        return $this->_idSector;
     }
     public function getPrecio(){
         return $this->_precio;
@@ -146,8 +146,8 @@ class Producto {
     public function setNombre($valor){
         $this->_nombre = $valor;
     }
-    public function setTipoId($valor){
-        $this->_tipoId = $valor;
+    public function setIdSector($valor){
+        $this->_idSector = $valor;
     }
     public function setPrecio($valor){
         $this->_precio = $valor;

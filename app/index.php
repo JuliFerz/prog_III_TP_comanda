@@ -15,7 +15,7 @@ require_once './db/AccesoDatos.php';
 require_once './controllers/UsuarioController.php';
 require_once './controllers/PedidoController.php';
 require_once './controllers/ProductoController.php';
-require_once './controllers/TipoProductoController.php';
+require_once './controllers/SectorController.php';
 require_once './controllers/MesaController.php';
 require_once './controllers/EncuestaController.php';
 
@@ -47,6 +47,7 @@ $app->group('/pedidos', function (RouteCollectorProxy $group) {
     $group->put('/{pedido}', \PedidoController::class . ':ModificarUno');
     $group->delete('/{pedido}', \PedidoController::class . ':BorrarUno');
     $group->post('/{pedido}/tomarFoto', \PedidoController::class . ':TomarFoto');
+    // $group->get('/disponibles', \PedidoController::class . ':TraerDisponibles');
 });
 
 $app->group('/productos', function (RouteCollectorProxy $group) {
@@ -55,12 +56,6 @@ $app->group('/productos', function (RouteCollectorProxy $group) {
     $group->post('[/]', \ProductoController::class . ':CargarUno');
     $group->put('/{producto}', \ProductoController::class . ':ModificarUno');
     $group->delete('/{producto}', \ProductoController::class . ':BorrarUno');
-
-    $group->get('/tipo/', \TipoProductoController::class . ':TraerTodos');
-    $group->get('/tipo/{tipo}', \TipoProductoController::class . ':TraerUno');
-    $group->post('/tipo/', \TipoProductoController::class . ':CargarUno');
-    $group->put('/tipo/{tipo}', \TipoProductoController::class . ':ModificarUno');
-    $group->delete('/tipo/{tipo}', \TipoProductoController::class . ':BorrarUno');
 });
 
 $app->group('/mesas', function (RouteCollectorProxy $group) {
@@ -69,6 +64,14 @@ $app->group('/mesas', function (RouteCollectorProxy $group) {
     $group->post('[/]', \MesaController::class . ':CargarUno');
     $group->put('/{mesa}', \MesaController::class . ':ModificarUno');
     $group->delete('/{mesa}', \MesaController::class . ':BorrarUno');
+});
+
+$app->group('/sectores', function (RouteCollectorProxy $group) {
+    $group->get('[/]', \SectorController::class . ':TraerTodos');
+    $group->get('/{sector}', \SectorController::class . ':TraerUno');
+    $group->post('[/]', \SectorController::class . ':CargarUno');
+    $group->put('/{sector}', \SectorController::class . ':ModificarUno');
+    $group->delete('/{sector}', \SectorController::class . ':BorrarUno');
 });
 
 $app->group('/encuestas', function (RouteCollectorProxy $group) {
