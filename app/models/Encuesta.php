@@ -34,18 +34,15 @@ class Encuesta {
         $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM encuestas WHERE codigo_pedido = :codigo_pedido;");
         $consulta->bindValue(':codigo_pedido', $codigoPedido, PDO::PARAM_INT);
         $consulta->execute();
-        return $consulta->fetchAll(PDO::FETCH_CLASS, 'Encuesta');
+        return $consulta->fetchObject('Encuesta');
     }
 
     public function crearEncuesta()
     {
-        if (Encuesta::obtenerPedidoYaCalificado($this->_codigoPedido)){ 
-            return false;
-        }
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO encuestas (codigo_pedido, puntos_mesa, puntos_restaurante, puntos_mozo, puntos_cocinero, comentarios)
             VALUES (:codigo_pedido, :puntos_mesa, :puntos_restaurante, :puntos_mozo, :puntos_cocinero, :comentarios)");
-        $consulta->bindValue(':codigo_pedido', $this->_codigoPedido, PDO::PARAM_INT);
+        $consulta->bindValue(':codigo_pedido', $this->_codigoPedido, PDO::PARAM_STR);
         $consulta->bindValue(':puntos_mesa', $this->_puntosMesa, PDO::PARAM_INT);
         $consulta->bindValue(':puntos_restaurante', $this->_puntosRestaurante, PDO::PARAM_INT);
         $consulta->bindValue(':puntos_mozo', $this->_puntosMozo, PDO::PARAM_INT);
@@ -57,9 +54,6 @@ class Encuesta {
 
     public function modificarEncuesta()
     {
-        if (!Encuesta::obtenerEncuestaPorId($this->_id)){ 
-            return false;
-        }
         $objAccesoDato = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDato->prepararConsulta("UPDATE encuestas SET 
             puntos_mesa = :puntos_mesa,
@@ -75,7 +69,6 @@ class Encuesta {
         $consulta->bindValue(':puntos_cocinero', $this->_puntosCocinero, PDO::PARAM_INT);
         $consulta->bindValue(':comentarios', $this->_comentarios, PDO::PARAM_STR);
         $consulta->execute();
-        return true;
     }
 
     public static function borrarEncuesta($id)

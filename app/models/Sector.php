@@ -24,6 +24,16 @@ class Sector {
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Sector');
     }
 
+    public static function obtenerSectorDisponible($id)
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT *
+            FROM sectores WHERE id = :id AND fecha_baja IS NULL;");
+        $consulta->bindValue(':id', $id, PDO::PARAM_INT);
+        $consulta->execute();
+        return $consulta->fetchObject('Usuario');
+    }
+
     public static function obtenerSectorPorNombre($detalle)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();

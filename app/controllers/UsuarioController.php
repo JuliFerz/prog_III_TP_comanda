@@ -2,6 +2,7 @@
 
 require_once './interfaces/IApiUsable.php';
 require_once './models/Usuario.php';
+require_once './models/Sector.php';
 
 class UsuarioController implements IApiUsable
 {
@@ -25,59 +26,98 @@ class UsuarioController implements IApiUsable
 
     public function CargarUno($request, $response, $args)
     {
-        $parametros = $request->getParsedBody();
-        $usuario = $parametros['usuario'];
-        $clave = $parametros['clave'];
-        $sector = $parametros['sector'];
-        $prioridad = $parametros['prioridad'] ?? 1;
+        try {
+            $parametros = $request->getParsedBody();
+            $usuario = $parametros['usuario'];
+            $clave = $parametros['clave'];
+            $idSector = $parametros['id_sector'];
+            $estado = $parametros['estado'] ?? 1;
+            $prioridad = $parametros['prioridad'] ?? 1;
 
-        if ($sector != "bartender" && $sector != "cervecero" && $sector != "cocinero" && $sector != "mozo" && $sector != "socio" /*  && $sector != "Cliente" */) {
-            $response->getBody()->write(json_encode(['error' => 'Sector incorrecto. Valores correctos: bartender, cervecero, cocinero, mozo o socio']));
+            $bdSector = Sector::obtenerSectorDisponible($idSector);
+            if (!$bdSector) {
+                $sectorTodos = Sector::obtenerTodos();
+                $strDisponibles = '';
+
+                foreach ($sectorTodos as $sector){
+                    if ($sector->{'fecha_baja'} != null){
+                        continue;
+                    }
+                    $idS = $sector->{'id'};
+                    $detalleS = $sector->{'detalle'};
+                    $strDisponibles .= "$detalleS ($idS), ";
+                }
+                $strDisponibles = substr($strDisponibles, 0, strlen($strDisponibles) - 2);
+
+                throw new Exception("El sector $idSector no esta disponible. Los sectores disponibles son: $strDisponibles.");
+            }
+
+            $usr = new Usuario();
+            $usr->setUsuario($usuario);
+            $usr->setClave($clave);
+            $usr->setIdSector($idSector);
+            $usr->setEstado($estado);
+            $usr->setPrioridad($prioridad);
+            $newUserId = $usr->crearUsuario();
+            $payload = json_encode(array("mensaje" => "Usuario $newUserId creado con exito"));
+        } catch (Exception $err) {
+            $payload = json_encode(array("error" => $err->getMessage()));
+        } finally {
+            $response->getBody()->write($payload);
             return $response->withHeader('Content-Type', 'application/json');
         }
-
-        $usr = new Usuario();
-        $usr->setUsuario($usuario);
-        $usr->setClave($clave);
-        $usr->setSector($sector);
-        $usr->setPrioridad($prioridad);
-        $newUserId = $usr->crearUsuario();
-        $payload = json_encode(array("mensaje" => "Usuario $newUserId creado con exito"));
-        $response->getBody()->write($payload);
-        return $response->withHeader('Content-Type', 'application/json');
     }
 
     public function ModificarUno($request, $response, $args)
     {
-        $parametros = $request->getParsedBody();
+        try{
+            $parametros = $request->getParsedBody();
 
-        $id = $args['usuario'];
-        $usuario = $parametros['usuario'];
-        $clave = $parametros['clave'];
-        $sector = $parametros['sector'];
-        $prioridad = $parametros['prioridad'] ?? 1;
+            $id = $args['usuario'];
+            $usuario = $parametros['usuario'];
+            $clave = $parametros['clave'];
+            $idSector = $parametros['id_sector'];
+            $estado = $parametros['estado'] ?? 1;
+            $prioridad = $parametros['prioridad'] ?? 1;
 
-        if ($sector != "bartender" && $sector != "cervecero" && $sector != "cocinero" && $sector != "mozo" && $sector != "socio" /*  && $sector != "Cliente" */) {
-            $response->getBody()->write(json_encode(['error' => 'Sector incorrecto. Valores correctos: bartender, cervecero, cocinero, mozo o socio']));
+            $bdSector = Sector::obtenerSectorDisponible($idSector);
+            if (!$bdSector) {
+                $sectorTodos = Sector::obtenerTodos();
+                $strDisponibles = '';
+
+                foreach ($sectorTodos as $sector){
+                    if ($sector->{'fecha_baja'} != null){
+                        continue;
+                    }
+                    $idS = $sector->{'id'};
+                    $detalleS = $sector->{'detalle'};
+                    $strDisponibles .= "$detalleS ($idS), ";
+                }
+                $strDisponibles = substr($strDisponibles, 0, strlen($strDisponibles) - 2);
+
+                throw new Exception("El sector $idSector no esta disponible. Los sectores disponibles son: $strDisponibles.");
+            }
+
+            $bdUser = Usuario::obtenerUsuario($id);
+            if (!$bdUser) {
+                throw new Exception("El usuario $id no existe");
+            }
+
+            $usr = new Usuario();
+            $usr->setId($id);
+            $usr->setUsuario($usuario);
+            $usr->setClave($clave);
+            $usr->setIdSector($idSector);
+            $usr->setEstado($estado);
+            $usr->setPrioridad($prioridad);
+            $usr->modificarUsuario();
+            $payload = json_encode(array("mensaje" => "Usuario $id modificado con exito"));
+        } catch (Exception $err) {
+            $payload = json_encode(array("error" => $err->getMessage()));
+        } finally {
+            $response->getBody()->write($payload);
             return $response->withHeader('Content-Type', 'application/json');
         }
-
-        $usr = new Usuario();
-        $usr->setId($id);
-        $usr->setUsuario($usuario);
-        $usr->setClave($clave);
-        $usr->setSector($sector);
-        $usr->setPrioridad($prioridad);
-        $res = $usr->modificarUsuario();
-
-        if (!$res) {
-            $payload = json_encode(array("error" => "El usuario $id no existe"));
-        } else {
-            $payload = json_encode(array("mensaje" => "Usuario modificado con exito"));
-        }
-
-        $response->getBody()->write($payload);
-        return $response->withHeader('Content-Type', 'application/json');
     }
 
     public function BorrarUno($request, $response, $args)

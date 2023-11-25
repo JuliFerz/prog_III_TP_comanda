@@ -23,15 +23,39 @@ class MesaController implements IApiUsable
         return $response->withHeader('Content-Type', 'application/json');
     }
 
+    public function ConsultarEstado($request, $response, $args)
+    {
+        try {
+            $codigoPedido = $args['cod_pedido'];
+            MesaController::ValidarCodigo($codigoPedido);
+            $bdMesa = Mesa::obtenerMesaPorCodigo($codigoPedido);
+            $estadoPedido = $bdMesa->{'estado_pedido'};
+            $tiempoPedido = $bdMesa->{'tiempo_preparacion'};
+
+            $mensaje = "La mesa con pedido $codigoPedido";
+            $mensaje .= $bdMesa->{'estado_pedido'} != 'listo para servir' 
+                ? " le quedan $tiempoPedido minutos"
+                : " finalizo en $tiempoPedido minutos";
+            $mensaje .= ". La misma se encuentra en estado $estadoPedido";
+            
+            $payload = json_encode(["mesa" => $mensaje]);
+        } catch (Exception $err) {
+            $payload = json_encode(["error" => $err->getMessage()]);
+        } finally {
+            $response->getBody()->write($payload);
+            return $response->withHeader('Content-Type', 'application/json');
+        }
+    }
+
     public function CargarUno($request, $response, $args)
     {
         $parametros = $request->getParsedBody();
-        $estado = $parametros['estado'] ?? 1; // TODO: no pasar este parametro
+        $estado = $parametros['estado'] ?? 'libre';
 
         $mesa = new Mesa();
         $mesa->setEstado($estado);
         $res = $mesa->crearMesa();
-            $payload = json_encode(array("mensaje" => "Mesa $res creado con exito"));
+        $payload = json_encode(array("mensaje" => "Mesa $res creado con exito"));
         $response->getBody()->write($payload);
         return $response->withHeader('Content-Type', 'application/json');
     }
@@ -41,10 +65,14 @@ class MesaController implements IApiUsable
         $parametros = $request->getParsedBody();
 
         $id = $args['mesa'];
+        $codigoPedido = $parametros['codigo_pedido'] ?? null;
+        $tiempoPreparacion = $parametros['tiempo_preparacion'] ?? null;
         $estado = $parametros['estado'];
 
         $mesa = new Mesa();
         $mesa->setId($id);
+        $mesa->setCodigoPedido($codigoPedido);
+        $mesa->setTiempoPreparacion($tiempoPreparacion);
         $mesa->setEstado($estado);
         $res = $mesa->modificarMesa();
 
@@ -69,6 +97,13 @@ class MesaController implements IApiUsable
         }
         $response->getBody()->write($payload);
         return $response->withHeader('Content-Type', 'application/json');
+    }
+
+    public static function ValidarCodigo($codigo)
+    {
+        if (!preg_match('/^[a-zA-Z0-9]+$/', $codigo) || strlen($codigo) != 5) {
+            throw new Exception('El codigo debe ser alfanumerico y de 5 caracteres de longitud.');
+        }
     }
 }
 

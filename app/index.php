@@ -48,6 +48,10 @@ $app->group('/pedidos', function (RouteCollectorProxy $group) {
     $group->put('/{pedido}', \PedidoController::class . ':ModificarUno');
     $group->delete('/{pedido}', \PedidoController::class . ':BorrarUno');
     $group->post('/{pedido}/tomarFoto', \PedidoController::class . ':TomarFoto');
+    $group->post('/{pedido}/prepararPedido', \PedidoController::class . ':PrepararPedido');
+    $group->post('/{pedido}/completarPedido', \PedidoController::class . ':CompletarPedido');
+    $group->post('/{pedido}/cobrarPedido', \PedidoController::class . ':CobrarPedido');
+    $group->post('/{pedido}/cerrarPedido', \PedidoController::class . ':CerrarPedido');
 });
 
 $app->group('/productos', function (RouteCollectorProxy $group) {
@@ -61,6 +65,7 @@ $app->group('/productos', function (RouteCollectorProxy $group) {
 $app->group('/mesas', function (RouteCollectorProxy $group) {
     $group->get('[/]', \MesaController::class . ':TraerTodos');
     $group->get('/{mesa}', \MesaController::class . ':TraerUno');
+    $group->get('/{cod_pedido}/estado', \MesaController::class . ':ConsultarEstado');
     $group->post('[/]', \MesaController::class . ':CargarUno');
     $group->put('/{mesa}', \MesaController::class . ':ModificarUno');
     $group->delete('/{mesa}', \MesaController::class . ':BorrarUno');

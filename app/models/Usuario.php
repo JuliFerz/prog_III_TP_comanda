@@ -4,18 +4,18 @@ class Usuario {
     private int $_id;
     private string $_usuario;
     private string $_clave;
-    // private array $_mesasACargo;
     // private string $_nombre;
     // private string $_apellido;
-    private string $_sector;
+    private string $_idSector;
     private int $_prioridad;
+    private bool $_estado;
     // private DateTime $fechaAlta;
     private DateTime $_fechaBaja;
 
     public static function obtenerTodos()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, usuario, clave, sector, prioridad, fecha_baja FROM usuarios");
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM usuarios");
         $consulta->execute();
 
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Usuario');
@@ -24,8 +24,18 @@ class Usuario {
     public static function obtenerUsuario($id)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, usuario, clave, sector, prioridad, fecha_baja FROM usuarios WHERE id = :id");
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM usuarios WHERE id = :id");
         $consulta->bindValue(':id', $id, PDO::PARAM_STR);
+        $consulta->execute();
+        return $consulta->fetchObject('Usuario');
+    }
+
+    public static function obtenerUsuarioDisponible($id)
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT *
+            FROM usuarios WHERE id = :id AND estado = 1;");
+        $consulta->bindValue(':id', $id, PDO::PARAM_INT);
         $consulta->execute();
         return $consulta->fetchObject('Usuario');
     }
@@ -33,31 +43,38 @@ class Usuario {
     public function crearUsuario()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO usuarios (usuario, clave, sector, prioridad) VALUES (:usuario, :clave, :sector, :prioridad)");
+        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO usuarios (usuario, clave, id_sector, prioridad, estado) VALUES (:usuario, :clave, :id_sector, :prioridad, :estado)");
         $claveHash = password_hash($this->_clave, PASSWORD_DEFAULT);
         $consulta->bindValue(':usuario', $this->_usuario, PDO::PARAM_STR);
         $consulta->bindValue(':clave', $claveHash);
-        $consulta->bindValue(':sector', $this->_sector, PDO::PARAM_STR);
+        $consulta->bindValue(':id_sector', $this->_idSector, PDO::PARAM_INT);
         $consulta->bindValue(':prioridad', $this->_prioridad, PDO::PARAM_INT);
+        $consulta->bindValue(':estado', $this->_estado, PDO::PARAM_BOOL);
         $consulta->execute();
         return $objAccesoDatos->obtenerUltimoId();
     }
 
-    public function modificarUsuario()
+    public function modificarUsuario($externo = false)
     {
-        $bdUser = Usuario::obtenerUsuario($this->_id);
-        if (!$bdUser){
-            return $bdUser;
+        if ($externo){
+            $this->_id = $this->{'id'};
+            $this->_usuario = $this->{'usuario'};
+            $this->_clave = $this->{'clave'};
+            $this->_idSector = $this->{'id_sector'};
+            $this->_prioridad = $this->{'prioridad'};
+            $this->_estado = $this->{'estado'};
         }
         $objAccesoDato = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDato->prepararConsulta("UPDATE usuarios SET usuario = :usuario, clave = :clave, sector = :sector, prioridad = :prioridad WHERE id = :id");
+        $consulta = $objAccesoDato->prepararConsulta("UPDATE usuarios SET usuario = :usuario, clave = :clave, id_sector = :id_sector, prioridad = :prioridad, estado = :estado WHERE id = :id");
         $consulta->bindValue(':id', $this->_id, PDO::PARAM_INT);
         $consulta->bindValue(':usuario', $this->_usuario, PDO::PARAM_STR);
-        $consulta->bindValue(':clave', $this->_clave, PDO::PARAM_STR); // Hashear?
-        $consulta->bindValue(':sector', $this->_sector, PDO::PARAM_STR);
+        // $consulta->bindValue(':clave', 
+        // password_hash($this->_clave, PASSWORD_DEFAULT), PDO::PARAM_STR); // TODO: hashear contraseña solo en llamado de modificarUsuario en clase de Usuario (NO en pedidoController)
+        $consulta->bindValue(':clave', $this->_clave, PDO::PARAM_STR);
+        $consulta->bindValue(':id_sector', $this->_idSector, PDO::PARAM_INT);
         $consulta->bindValue(':prioridad', $this->_prioridad, PDO::PARAM_INT);
+        $consulta->bindValue(':estado', $this->_estado, PDO::PARAM_BOOL);
         $consulta->execute();
-        return true;
     }
 
     public static function borrarUsuario($id)
@@ -88,12 +105,15 @@ class Usuario {
         return $this->_clave;
     }
     
-    public function getSector(){
-        return $this->_sector;
+    public function getIdSector(){
+        return $this->_idSector;
     }
     
     public function getPrioridad(){
         return $this->_prioridad;
+    }
+    public function getEstado(){
+        return $this->_estado;
     }
     public function getFechaBaja(){
         return $this->_fechaBaja;
@@ -109,11 +129,14 @@ class Usuario {
     public function setClave($valor){
         $this->_clave = $valor;
     }
-    public function setSector($valor){
-        $this->_sector = $valor;
+    public function setIdSector($valor){
+        $this->_idSector = $valor;
     }
     public function setPrioridad($valor){
         $this->_prioridad = $valor;
+    }
+    public function setEstado($valor){
+        $this->_estado = $valor;
     }
     public function setFechaBaja($valor){
         $this->_fechaBaja = $valor;

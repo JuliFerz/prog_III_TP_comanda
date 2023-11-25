@@ -39,6 +39,7 @@ class ProductoController implements IApiUsable
         $idSector = $parametros['id_sector'];
         $precio = $parametros['precio'];
         $stock = $parametros['stock'];
+        $tiempoPreparacion = $parametros['tiempo_preparacion'];
         $estado = $parametros['estado'] ?? 1;
         $fechaCreacion = new DateTime(date("d-m-Y"));
 
@@ -47,6 +48,7 @@ class ProductoController implements IApiUsable
         $producto->setIdSector($idSector);
         $producto->setPrecio($precio);
         $producto->setStock($stock);
+        $producto->setTiempoPreparacion($tiempoPreparacion);
         $producto->setEstado($estado);
         $producto->setFechaCreacion($fechaCreacion);
         $res = $producto->crearProducto();
@@ -64,6 +66,7 @@ class ProductoController implements IApiUsable
         $idSector = $parametros['id_sector'];
         $precio = $parametros['precio'];
         $stock = $parametros['stock'];
+        $tiempoPreparacion = $parametros['tiempo_preparacion'];
         $estado = $parametros['estado'] ?? 1;
 
         $producto = new Producto();
@@ -72,6 +75,7 @@ class ProductoController implements IApiUsable
         $producto->setIdSector($idSector);
         $producto->setPrecio($precio);
         $producto->setStock($stock);
+        $producto->setTiempoPreparacion($tiempoPreparacion);
         $producto->setEstado($estado);
         $res = $producto->modificarProducto();
 
