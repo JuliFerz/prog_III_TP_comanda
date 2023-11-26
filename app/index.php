@@ -19,6 +19,10 @@ require_once './controllers/SectorController.php';
 require_once './controllers/MesaController.php';
 require_once './controllers/EncuestaController.php';
 
+require_once './middlewares/FieldsMiddleware.php';
+require_once './middlewares/LoggerMiddleware.php';
+require_once './middlewares/AuthMiddleware.php';
+
 $app = AppFactory::create();
 
 // Add error middleware
@@ -35,7 +39,7 @@ $app->get('[/]', function (Request $request, Response $response) {
 $app->group('/usuarios', function (RouteCollectorProxy $group) {
     $group->get('[/]', \UsuarioController::class . ':TraerTodos');
     $group->get('/{usuario}', \UsuarioController::class . ':TraerUno');
-    $group->post('[/]', \UsuarioController::class . ':CargarUno');
+    $group->post('[/]', \UsuarioController::class . ':CargarUno')->add(new FieldsMiddleware());
     $group->put('/{usuario}', \UsuarioController::class . ':ModificarUno');
     $group->delete('/{usuario}', \UsuarioController::class . ':BorrarUno');
 });

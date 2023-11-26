@@ -30,6 +30,9 @@ class UsuarioController implements IApiUsable
             $parametros = $request->getParsedBody();
             $usuario = $parametros['usuario'];
             $clave = $parametros['clave'];
+            $nombre = $parametros['nombre'];
+            $apellido = $parametros['apellido'];
+            $correo = $parametros['correo'];
             $idSector = $parametros['id_sector'];
             $estado = $parametros['estado'] ?? 1;
             $prioridad = $parametros['prioridad'] ?? 1;
@@ -55,6 +58,9 @@ class UsuarioController implements IApiUsable
             $usr = new Usuario();
             $usr->setUsuario($usuario);
             $usr->setClave($clave);
+            $usr->setNombre($nombre);
+            $usr->setApellido($apellido);
+            $usr->setCorreo($correo);
             $usr->setIdSector($idSector);
             $usr->setEstado($estado);
             $usr->setPrioridad($prioridad);
@@ -76,6 +82,9 @@ class UsuarioController implements IApiUsable
             $id = $args['usuario'];
             $usuario = $parametros['usuario'];
             $clave = $parametros['clave'];
+            $nombre = $parametros['nombre'];
+            $apellido = $parametros['apellido'];
+            $correo = $parametros['correo'];
             $idSector = $parametros['id_sector'];
             $estado = $parametros['estado'] ?? 1;
             $prioridad = $parametros['prioridad'] ?? 1;
@@ -107,6 +116,9 @@ class UsuarioController implements IApiUsable
             $usr->setId($id);
             $usr->setUsuario($usuario);
             $usr->setClave($clave);
+            $usr->setNombre($nombre);
+            $usr->setApellido($apellido);
+            $usr->setCorreo($correo);
             $usr->setIdSector($idSector);
             $usr->setEstado($estado);
             $usr->setPrioridad($prioridad);

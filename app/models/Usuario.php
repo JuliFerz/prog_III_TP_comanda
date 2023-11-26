@@ -4,8 +4,9 @@ class Usuario {
     private int $_id;
     private string $_usuario;
     private string $_clave;
-    // private string $_nombre;
-    // private string $_apellido;
+    private string $_nombre;
+    private string $_apellido;
+    private string $_correo;
     private string $_idSector;
     private int $_prioridad;
     private bool $_estado;
@@ -43,10 +44,15 @@ class Usuario {
     public function crearUsuario()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO usuarios (usuario, clave, id_sector, prioridad, estado) VALUES (:usuario, :clave, :id_sector, :prioridad, :estado)");
+        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO usuarios 
+                (usuario, clave, nombre, apellido, correo, id_sector, prioridad, estado)
+            VALUES (:usuario, :clave, :nombre, :apellido, :correo, :id_sector, :prioridad, :estado)");
         $claveHash = password_hash($this->_clave, PASSWORD_DEFAULT);
         $consulta->bindValue(':usuario', $this->_usuario, PDO::PARAM_STR);
         $consulta->bindValue(':clave', $claveHash);
+        $consulta->bindValue(':nombre', $this->_nombre, PDO::PARAM_STR);
+        $consulta->bindValue(':apellido', $this->_apellido, PDO::PARAM_STR);
+        $consulta->bindValue(':correo', $this->_correo, PDO::PARAM_STR);
         $consulta->bindValue(':id_sector', $this->_idSector, PDO::PARAM_INT);
         $consulta->bindValue(':prioridad', $this->_prioridad, PDO::PARAM_INT);
         $consulta->bindValue(':estado', $this->_estado, PDO::PARAM_BOOL);
@@ -60,17 +66,32 @@ class Usuario {
             $this->_id = $this->{'id'};
             $this->_usuario = $this->{'usuario'};
             $this->_clave = $this->{'clave'};
+            $this->_nombre = $this->{'nombre'};
+            $this->_apellido = $this->{'apellido'};
+            $this->_correo = $this->{'correo'};
             $this->_idSector = $this->{'id_sector'};
             $this->_prioridad = $this->{'prioridad'};
             $this->_estado = $this->{'estado'};
         }
         $objAccesoDato = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDato->prepararConsulta("UPDATE usuarios SET usuario = :usuario, clave = :clave, id_sector = :id_sector, prioridad = :prioridad, estado = :estado WHERE id = :id");
+        $consulta = $objAccesoDato->prepararConsulta("UPDATE usuarios 
+            SET usuario = :usuario,
+                clave = :clave,
+                nombre = :nombre,
+                apellido = :apellido,
+                correo = :correo,
+                id_sector = :id_sector,
+                prioridad = :prioridad,
+                estado = :estado 
+            WHERE id = :id");
         $consulta->bindValue(':id', $this->_id, PDO::PARAM_INT);
         $consulta->bindValue(':usuario', $this->_usuario, PDO::PARAM_STR);
         // $consulta->bindValue(':clave', 
         // password_hash($this->_clave, PASSWORD_DEFAULT), PDO::PARAM_STR); // TODO: hashear contraseña solo en llamado de modificarUsuario en clase de Usuario (NO en pedidoController)
         $consulta->bindValue(':clave', $this->_clave, PDO::PARAM_STR);
+        $consulta->bindValue(':nombre', $this->_nombre, PDO::PARAM_STR);
+        $consulta->bindValue(':apellido', $this->_apellido, PDO::PARAM_STR);
+        $consulta->bindValue(':correo', $this->_correo, PDO::PARAM_STR);
         $consulta->bindValue(':id_sector', $this->_idSector, PDO::PARAM_INT);
         $consulta->bindValue(':prioridad', $this->_prioridad, PDO::PARAM_INT);
         $consulta->bindValue(':estado', $this->_estado, PDO::PARAM_BOOL);
@@ -104,6 +125,15 @@ class Usuario {
     public function getClave(){
         return $this->_clave;
     }
+    public function getNombre(){
+        return $this->_nombre;
+    }
+    public function getApellido(){
+        return $this->_apellido;
+    }
+    public function getCorreo(){
+        return $this->_correo;
+    }
     
     public function getIdSector(){
         return $this->_idSector;
@@ -128,6 +158,15 @@ class Usuario {
     }
     public function setClave($valor){
         $this->_clave = $valor;
+    }
+    public function setNombre($valor){
+        $this->_nombre = $valor;
+    }
+    public function setApellido($valor){
+        $this->_apellido = $valor;
+    }
+    public function setCorreo($valor){
+        $this->_correo = $valor;
     }
     public function setIdSector($valor){
         $this->_idSector = $valor;
