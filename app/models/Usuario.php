@@ -1,5 +1,7 @@
 <?php
 
+require_once './controllers/FileController.php';
+
 class Usuario {
     private int $_id;
     private string $_usuario;
@@ -20,6 +22,14 @@ class Usuario {
         $consulta->execute();
 
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Usuario');
+    }
+    public static function obtenerTodosCSV()
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM usuarios");
+        $consulta->execute();
+
+        return $consulta->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public static function obtenerUsuario($id)
@@ -109,6 +119,32 @@ class Usuario {
         $consulta->bindValue(':fechaBaja', date_format($fecha, 'Y-m-d H:i:s'));
         $consulta->execute();
         return true;
+    }
+
+    public static function DescargaUsuarios($usuarios){
+        $fileController = new FileController('public/csv/');
+        $file = $fileController->abrirArchivo('usuarios', 'csv');
+        foreach ($usuarios as $usuario) {
+            fputcsv($file, $usuario);
+        }
+        fclose($file);
+    }
+
+    public static function CargarUsuarios($archivo){
+        $file = fopen($archivo, 'r');
+        while (($data = fgetcsv($file)) !== FALSE) {
+            $usuario = new Usuario();
+            $usuario->setUsuario($data[0]);
+            $usuario->setClave(password_hash($data[1], PASSWORD_DEFAULT));
+            $usuario->setNombre($data[2]);
+            $usuario->setApellido($data[3]);
+            $usuario->setCorreo($data[4]);
+            $usuario->setIdSector((int)$data[5]);
+            $usuario->setPrioridad((int)$data[6]);
+            $usuario->setEstado(1);
+            $usuario->crearUsuario();
+        }
+        fclose($file);
     }
 
     //-- Getter

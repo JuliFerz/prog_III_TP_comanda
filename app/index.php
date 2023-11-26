@@ -20,6 +20,7 @@ require_once './controllers/SectorController.php';
 require_once './controllers/MesaController.php';
 require_once './controllers/EncuestaController.php';
 require_once './controllers/AuthController.php';
+require_once './controllers/CSVController.php';
 
 require_once './middlewares/FieldsMiddleware.php';
 require_once './middlewares/AuthMiddleware.php';
@@ -293,6 +294,11 @@ $app->group('/encuestas', function (RouteCollectorProxy $group) {
     $group->delete('/{encuesta}', \EncuestaController::class . ':BorrarUno')
         ->add($borrarUno)
         ->add(\AuthMiddleware::class . ':verificarToken');
+});
+
+$app->group('/csv', function (RouteCollectorProxy $group) {
+    $group->get('/descargar', \CSVController::class . ':DescargarEntidad');
+    $group->post('/cargar', \CSVController::class . ':CargarEntidad');
 });
 
 $app->run();

@@ -8,3 +8,4 @@
 /vendor
 .env
 app/images/*
+app/public/*

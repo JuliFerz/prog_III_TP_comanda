@@ -24,5 +24,16 @@ class FileController
             }
         }
     }
+
+    public function abrirArchivo($nombre, $ext)
+    {
+        $nombreArchivo = $this->path . $nombre . $ext;
+        if (file_exists($nombreArchivo)) {
+            $file = fopen($nombreArchivo, 'a');
+        } else {
+            $file = fopen($nombreArchivo, 'w');
+        }
+        return $file;
+    }
 }
 ?>
