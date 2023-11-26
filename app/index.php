@@ -41,7 +41,6 @@ $app->get('[/]', function (Request $request, Response $response) {
 $app->group('/login', function (RouteCollectorProxy $group) {
     $group->post('[/]', \AuthController::class . ':GenerarToken')
         ->add(\AuthMiddleware::class . ':validarLogin');
-    // $group->get('/verificarToken', \AuthController::class . ':VerificarToken');
 });
 
 $app->group('/usuarios', function (RouteCollectorProxy $group) {

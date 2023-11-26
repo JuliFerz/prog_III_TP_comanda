@@ -12,7 +12,6 @@ class Usuario {
     private string $_idSector;
     private int $_prioridad;
     private bool $_estado;
-    // private DateTime $fechaAlta;
     private DateTime $_fechaBaja;
 
     public static function obtenerTodos()
