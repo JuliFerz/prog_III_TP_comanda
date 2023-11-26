@@ -86,8 +86,6 @@ class Usuario {
             WHERE id = :id");
         $consulta->bindValue(':id', $this->_id, PDO::PARAM_INT);
         $consulta->bindValue(':usuario', $this->_usuario, PDO::PARAM_STR);
-        // $consulta->bindValue(':clave', 
-        // password_hash($this->_clave, PASSWORD_DEFAULT), PDO::PARAM_STR); // TODO: hashear contraseña solo en llamado de modificarUsuario en clase de Usuario (NO en pedidoController)
         $consulta->bindValue(':clave', $this->_clave, PDO::PARAM_STR);
         $consulta->bindValue(':nombre', $this->_nombre, PDO::PARAM_STR);
         $consulta->bindValue(':apellido', $this->_apellido, PDO::PARAM_STR);

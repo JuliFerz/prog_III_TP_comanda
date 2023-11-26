@@ -115,7 +115,7 @@ class UsuarioController implements IApiUsable
             $usr = new Usuario();
             $usr->setId($id);
             $usr->setUsuario($usuario);
-            $usr->setClave($clave);
+            $usr->setClave(password_hash($clave, PASSWORD_DEFAULT));
             $usr->setNombre($nombre);
             $usr->setApellido($apellido);
             $usr->setCorreo($correo);

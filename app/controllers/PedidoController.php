@@ -115,7 +115,7 @@ class PedidoController implements IApiUsable
             $tiempoPreparacion = $parametros['tiempo_preparacion'] ?? null;
             $nombreCliente = $parametros['nombre_cliente'];
             $descripcion = $parametros['descripcion'] ?? '';
-            $estado = $parametros['estado'] ?? 1; // TODO: el estado que se recibe debe ser entre los valores posibles
+            $estado = $parametros['estado'];
 
             $bdPedido = Pedido::obtenerPedidoPorId($id);
             if (!$bdPedido) {
@@ -164,13 +164,11 @@ class PedidoController implements IApiUsable
     {
         try {
             $archivos = $request->getUploadedFiles();
-            $parametros = $request->getParsedBody();
             $idPedido = $args['pedido'];
-            $idUsuario = $parametros['id_usuario'];
 
             $pedido = new Pedido();
             $pedido->setId($idPedido);
-            $res = $pedido->actualizarFoto($archivos['foto'], $idUsuario);
+            $res = $pedido->actualizarFoto($archivos['foto']);
 
             if (!$res) {
                 $payload = json_encode(array("error" => "El pedido $idPedido no existe"));
@@ -321,7 +319,6 @@ class PedidoController implements IApiUsable
     public function CerrarPedido($request, $response, $args)
     {
         try {
-            // TODO: esto solo lo puede hacer el socio
             $id = $args['pedido'];
             $bdPedidos = Pedido::obtenerPedidosPorCodigo($id);
             if(!$bdPedidos) {

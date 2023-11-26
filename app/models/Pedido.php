@@ -180,14 +180,13 @@ class Pedido {
         return true;
     }
 
-    public function actualizarFoto($datosImg, $idUsuario)
+    public function actualizarFoto($datosImg)
     {
         $bdPedidos = Pedido::obtenerPedidosPorCodigo($this->_id);
         if (!$bdPedidos) {
             return false;
         }
         $fileController = new FileController($this->_PATH);
-        // TODO: Cambiar el nombre de imagen
         $nombreImg = $bdPedidos[0]->{'codigo_pedido'}
             . '_' . $bdPedidos[0]->{'id_mesa'} . '_';
         foreach ($bdPedidos as $objPedido) {

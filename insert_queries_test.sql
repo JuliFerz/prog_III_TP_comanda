@@ -102,13 +102,6 @@ VALUES
   ("murphy","clave99","Ryder","Valentina","ullamcorper@aol.com",2,1),
   ("tashya","clave100","Lucian","Gomez","ac.fermentum@outlook.ca",2,1);
 
-INSERT INTO `sector` (`detalle`) 
-VALUES 
- ("Barra de tragos y vinos"),
- ("Barra de choperas"),
- ("Cocina"),
- ("Candy Bar");
-
 
 /* INSERT INTO `pedidos` (`codigo_pedido`,`id_mesa`,`id_usuario`,`nombre_cliente`,`descripcion`,`estado`)
 VALUES

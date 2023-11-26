@@ -21,7 +21,7 @@ class Sector {
         $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM sectores WHERE id = :id");
         $consulta->bindValue(':id', $id, PDO::PARAM_INT);
         $consulta->execute();
-        return $consulta->fetchAll(PDO::FETCH_CLASS, 'Sector');
+        return $consulta->fetchObject('Sector');
     }
 
     public static function obtenerSectorDisponible($id)
