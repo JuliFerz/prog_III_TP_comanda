@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 26-11-2023 a las 05:46:01
+-- Tiempo de generación: 26-11-2023 a las 07:50:22
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.0.28
 
@@ -43,7 +43,8 @@ CREATE TABLE `encuestas` (
 --
 
 INSERT INTO `encuestas` (`id`, `codigo_pedido`, `puntos_mesa`, `puntos_restaurante`, `puntos_mozo`, `puntos_cocinero`, `comentarios`, `fecha_baja`) VALUES
-(1, 'Qud25', 9, 8, 7, 6, 'Todo ok por el momento.', NULL);
+(1, 'Qud25', 9, 8, 7, 6, 'Todo ok por el momento.', NULL),
+(2, 'xRkU9', 10, 10, 10, 10, 'Esto es un comentario de test para mi encuesta.', NULL);
 
 -- --------------------------------------------------------
 
@@ -55,6 +56,7 @@ CREATE TABLE `mesas` (
   `id` int(11) NOT NULL,
   `codigo_pedido` varchar(5) DEFAULT NULL,
   `tiempo_preparacion` int(11) DEFAULT NULL,
+  `veces_usada` int(11) DEFAULT NULL,
   `estado` varchar(50) NOT NULL,
   `fecha_baja` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -63,19 +65,19 @@ CREATE TABLE `mesas` (
 -- Volcado de datos para la tabla `mesas`
 --
 
-INSERT INTO `mesas` (`id`, `codigo_pedido`, `tiempo_preparacion`, `estado`, `fecha_baja`) VALUES
-(1, NULL, NULL, 'cerrada', NULL),
-(2, NULL, NULL, 'libre', NULL),
-(3, 'yJP0b', NULL, 'libre', NULL),
-(4, NULL, NULL, 'libre', NULL),
-(5, NULL, NULL, 'libre', NULL),
-(6, NULL, NULL, 'libre', NULL),
-(7, NULL, NULL, 'libre', NULL),
-(8, NULL, NULL, 'libre', NULL),
-(9, NULL, NULL, 'libre', NULL),
-(10, NULL, NULL, 'libre', NULL),
-(11, NULL, NULL, 'libre', '2023-11-23'),
-(12, NULL, NULL, 'libre', '2023-11-25');
+INSERT INTO `mesas` (`id`, `codigo_pedido`, `tiempo_preparacion`, `veces_usada`, `estado`, `fecha_baja`) VALUES
+(1, NULL, NULL, 3, 'libre', NULL),
+(2, 'PoBD6', 100, 5, 'con cliente esperando pedido', NULL),
+(3, NULL, NULL, 35, 'cerrada', NULL),
+(4, NULL, NULL, 9, 'libre', NULL),
+(5, NULL, NULL, NULL, 'libre', NULL),
+(6, NULL, NULL, 6, 'libre', NULL),
+(7, NULL, NULL, 9, 'libre', NULL),
+(8, NULL, NULL, 5, 'libre', NULL),
+(9, NULL, NULL, 23, 'libre', NULL),
+(10, NULL, NULL, 10, 'libre', NULL),
+(11, NULL, NULL, 3, 'libre', '2023-11-23'),
+(12, NULL, NULL, 2, 'libre', '2023-11-25');
 
 -- --------------------------------------------------------
 
@@ -191,7 +193,17 @@ INSERT INTO `pedidos` (`id`, `codigo_pedido`, `id_producto`, `id_mesa`, `id_usua
 (86, 'n71kg', 4, 2, NULL, NULL, 'Jorge', NULL, NULL, NULL, 'pendiente', NULL),
 (87, 'n71kg', 18, 1, 0, 35, 'Cliente de prueba', NULL, NULL, NULL, 'pendiente', NULL),
 (88, 'n71kg', 18, 1, 0, 35, 'Cliente de prueba', NULL, NULL, NULL, 'pendiente', NULL),
-(89, 'yJP0b', 10, 3, NULL, NULL, 'test', NULL, NULL, NULL, 'pendiente', NULL);
+(89, 'yJP0b', 10, 3, NULL, NULL, 'test', NULL, NULL, NULL, 'pendiente', NULL),
+(90, 'PoBD6', 20, 2, 105, 100, 'test', NULL, 'PoBD6_2_testJorgitoRobbyRobbytest.png', NULL, 'en preparacion', NULL),
+(91, 'PoBD6', 21, 2, 103, 100, 'Jorgito', NULL, 'PoBD6_2_testJorgitoRobbyRobbytest.png', NULL, 'en preparacion', NULL),
+(92, 'PoBD6', 21, 2, 102, 100, 'Robby', NULL, 'PoBD6_2_testJorgitoRobbyRobbytest.png', NULL, 'en preparacion', NULL),
+(93, 'PoBD6', 22, 2, 107, 100, 'Robby', NULL, 'PoBD6_2_testJorgitoRobbyRobbytest.png', NULL, 'en preparacion', NULL),
+(94, 'PoBD6', 23, 2, 106, 100, 'test', NULL, 'PoBD6_2_testJorgitoRobbyRobbytest.png', NULL, 'en preparacion', NULL),
+(95, 'xRkU9', 20, 3, 2, 100, 'Jorge', NULL, 'xRkU9_3_JorgePepeEstebanFooCliente.png', 2, 'listo para servir', '2023-11-26'),
+(96, 'xRkU9', 21, 3, 7, 100, 'Pepe', NULL, 'xRkU9_3_JorgePepeEstebanFooCliente.png', 2, 'listo para servir', '2023-11-26'),
+(97, 'xRkU9', 21, 3, 8, 100, 'Esteban Perez', NULL, 'xRkU9_3_JorgePepeEstebanFooCliente.png', 2, 'listo para servir', '2023-11-26'),
+(98, 'xRkU9', 22, 3, 4, 100, 'Foo Bar', NULL, 'xRkU9_3_JorgePepeEstebanFooCliente.png', 2, 'listo para servir', '2023-11-26'),
+(99, 'xRkU9', 23, 3, 3, 100, 'Cliente de prueba', NULL, 'xRkU9_3_JorgePepeEstebanFooCliente.png', 2, 'listo para servir', '2023-11-26');
 
 -- --------------------------------------------------------
 
@@ -235,7 +247,11 @@ INSERT INTO `productos` (`id`, `nombre`, `id_sector`, `precio`, `stock`, `tiempo
 (16, 'Agua', 2, 10641, 78, 5, 1, '2023-11-12', NULL, NULL),
 (17, 'Cerveza blanca', 3, 18503, 56, 5, 1, '2023-11-12', NULL, NULL),
 (18, 'Cerveza rubia', 3, 22924, 65, 5, 1, '2023-11-12', NULL, NULL),
-(19, 'Pure con milanesa', 1, 6500, 70014, 25, 1, '2023-11-24', '2023-11-24', NULL);
+(19, 'Pure con milanesa', 1, 6500, 70014, 25, 1, '2023-11-24', '2023-11-24', NULL),
+(20, 'Milanesa a caballo', 1, 5000, 3, 30, 1, '2023-11-26', '2023-11-26', NULL),
+(21, 'Hamburguesa de garbanzo', 1, 4500, 46, 25, 1, '2023-11-26', '2023-11-26', NULL),
+(22, 'Corona', 3, 15000, 43, 5, 1, '2023-11-26', '2023-11-26', NULL),
+(23, 'Daikiri', 2, 45000, 448, 15, 1, '2023-11-26', '2023-11-26', NULL);
 
 -- --------------------------------------------------------
 
@@ -310,108 +326,13 @@ CREATE TABLE `usuarios` (
 
 INSERT INTO `usuarios` (`id`, `usuario`, `clave`, `nombre`, `apellido`, `correo`, `id_sector`, `prioridad`, `estado`, `fecha_baja`) VALUES
 (1, 'admin', '$2y$10$Da0Cipt6jin4t4/ZtNFCm.zZZ1OccDJ3Oa3Pv67uoxk9lvumMB6Jy', 'Julian', 'Fernandez', 'admin@gmail.com', 6, 3, 1, NULL),
-(2, 'chandler', 'clave1', 'Clayton', 'Maximo', 'amet.ultricies@aol.net', 3, 1, 1, NULL),
-(3, 'malik', 'clave2', 'Ferdinand', 'Figueroa', 'aliquam.erat.volutpat@google.net', 3, 1, 1, NULL),
-(4, 'travis', 'clave3', 'Jamal', 'Ignacio', 'aliquet.sem.ut@protonmail.com', 3, 1, 1, NULL),
-(5, 'anne', 'clave4', 'Aaron', 'Alonsos', 'lacus@yahoo.com', 2, 1, 1, NULL),
-(6, 'eve', 'clave5', 'Salvador', 'Figueroa', 'in.ornare@protonmail.com', 4, 1, 1, NULL),
-(7, 'adria', 'clave6', 'Miranda', 'Vargas', 'cum.sociis@google.org', 1, 1, 1, NULL),
-(8, 'yuli', 'clave7', 'Rigel', 'Gonzalez', 'vulputate@protonmail.ca', 2, 1, 1, NULL),
-(9, 'urielle', 'clave8', 'Melvin', 'Rojas', 'nibh.phasellus@outlook.edu', 3, 1, 1, NULL),
-(10, 'risa', 'clave9', 'Karly', 'Perez', 'dapibus.quam.quis@outlook.net', 3, 1, 1, NULL),
-(11, 'lucius', 'clave10', 'Avye', 'Felipe', 'nec.malesuada@google.net', 1, 1, 1, NULL),
-(12, 'george', 'clave11', 'Lewis', 'Emilia', 'ligula.elit@google.com', 3, 1, 1, NULL),
-(13, 'macey', 'clave12', 'Todd', 'Paz', 'vel.est.tempor@aol.couk', 1, 1, 1, NULL),
-(14, 'dexter', 'clave13', 'Kim', 'Figueroa', 'fermentum.vel.mauris@outlook.ca', 4, 1, 1, NULL),
-(15, 'quemby', 'clave14', 'Andrew', 'Daniel', 'nibh@hotmail.com', 1, 1, 1, NULL),
-(16, 'selma', 'clave15', 'Lacey', 'Valentina', 'iaculis.odio@protonmail.couk', 2, 1, 1, NULL),
-(17, 'candace', 'clave16', 'Tucker', 'Maria', 'nulla.magna@icloud.couk', 1, 1, 1, NULL),
-(18, 'lacy', 'clave17', 'Travis', 'Joaquin', 'nec.mollis@protonmail.org', 3, 1, 1, NULL),
-(19, 'elvis', 'clave18', 'Driscoll', 'Vergara', 'egestas.fusce@protonmail.edu', 3, 1, 1, NULL),
-(20, 'dominic', 'clave19', 'Kirby', 'Chichi', 'molestie.tellus.aenean@protonmail.com', 4, 1, 1, NULL),
-(21, 'jaquelyn', 'clave20', 'Dale', 'Laura', 'arcu.vivamus@yahoo.couk', 2, 1, 1, NULL),
-(22, 'judith', 'clave21', 'Ava', 'Gonzalez', 'non.nisi.aenean@outlook.org', 1, 1, 1, NULL),
-(23, 'halee', 'clave22', 'Francis', 'Vega', 'elit@icloud.couk', 3, 1, 1, NULL),
-(24, 'april', 'clave23', 'Kylan', 'Contreras', 'purus@aol.couk', 3, 1, 1, NULL),
-(25, 'kevyn', 'clave24', 'Xavier', 'Silva', 'nunc.sed@aol.couk', 1, 1, 1, NULL),
-(26, 'eaton', 'clave25', 'Gage', 'Sebastian', 'natoque.penatibus@google.ca', 1, 1, 1, NULL),
-(27, 'cheryl', 'clave26', 'Rebecca', 'Espinoza', 'luctus.aliquet@hotmail.net', 3, 1, 1, NULL),
-(28, 'anne', 'clave27', 'Audra', 'Isabella', 'massa.mauris@google.edu', 4, 1, 1, NULL),
-(29, 'elvis', 'clave28', 'Minerva', 'Felipe', 'ipsum.dolor.sit@hotmail.net', 2, 1, 1, NULL),
-(30, 'clementine', 'clave29', 'Aileen', 'Figueroa', 'curabitur.sed@icloud.ca', 3, 1, 1, NULL),
-(31, 'gabriel', 'clave30', 'Bevis', 'Ignacio', 'amet@protonmail.edu', 1, 1, 1, NULL),
-(32, 'wilma', 'clave31', 'Gannon', 'Sofia', 'eget.tincidunt@outlook.edu', 3, 1, 1, NULL),
-(33, 'edan', 'clave32', 'Nathan', 'Luis', 'cursus.purus@protonmail.couk', 3, 1, 1, NULL),
-(34, 'jasmine', 'clave33', 'Conan', 'Florencia', 'ultricies@google.ca', 3, 1, 1, NULL),
-(35, 'wade', 'clave34', 'Rhea', 'Azizi', 'nostra@aol.ca', 3, 1, 1, NULL),
-(36, 'magee', 'clave35', 'Timon', 'Monserrat', 'mollis.nec.cursus@aol.com', 3, 1, 1, NULL),
-(37, 'fallon', 'clave36', 'Kelsie', 'Reyes', 'orci.luctus.et@aol.org', 1, 1, 1, NULL),
-(38, 'jerry', 'clave37', 'Owen', 'Gonzalez', 'eget.mollis@outlook.couk', 4, 1, 1, NULL),
-(39, 'anjolie', 'clave38', 'Kyle', 'Vera', 'metus.sit@outlook.org', 1, 1, 1, NULL),
-(40, 'brittany', 'clave39', 'Claire', 'Sepulveda', 'neque@icloud.com', 4, 1, 1, NULL),
-(41, 'mercedes', 'clave40', 'Clarke', 'Carrasco', 'ultricies.ornare.elit@icloud.org', 2, 1, 1, NULL),
-(42, 'juliet', 'clave41', 'Ishmael', 'Rodriguez', 'erat@hotmail.edu', 2, 1, 1, NULL),
-(43, 'maryam', 'clave42', 'Octavius', 'Magdalena', 'tristique@protonmail.net', 3, 1, 1, NULL),
-(44, 'fatima', 'clave43', 'Giselle', 'Bravo', 'consectetuer@protonmail.edu', 1, 1, 1, NULL),
-(45, 'naomi', 'clave44', 'Brooke', 'Lopez', 'purus.sapien@google.edu', 4, 1, 1, NULL),
-(46, 'ifeoma', 'clave45', 'Iliana', 'Martina', 'per.inceptos@aol.edu', 3, 1, 1, NULL),
-(47, 'evan', 'clave46', 'Bo', 'Thiarre', 'mollis@google.edu', 2, 1, 1, NULL),
-(48, 'julian', 'clave47', 'Kylie', 'Alvarez', 'mauris@google.com', 4, 1, 1, NULL),
-(49, 'alma', 'clave48', 'Cullen', 'Augustin', 'orci.consectetuer@google.com', 4, 1, 1, NULL),
-(50, 'clayton', 'clave49', 'Vladimir', 'Fernanda', 'neque@protonmail.edu', 3, 1, 1, NULL),
-(51, 'reagan', 'clave50', 'Kevin', 'Vicente', 'turpis.vitae@hotmail.com', 1, 1, 1, NULL),
-(52, 'abel', 'clave51', 'Alexandra', 'Trinidad', 'donec.tincidunt@protonmail.com', 4, 1, 1, NULL),
-(53, 'rahim', 'clave52', 'Jonas', 'Gomez', 'amet.lorem@yahoo.ca', 1, 1, 1, NULL),
-(54, 'alma', 'clave53', 'Jenna', 'Trinidad', 'felis.donec@google.net', 4, 1, 1, NULL),
-(55, 'phelan', 'clave54', 'Stewart', 'Perez', 'non.enim@aol.ca', 4, 1, 1, NULL),
-(56, 'aileen', 'clave55', 'Christian', 'Daniel', 'lorem.ac@hotmail.edu', 3, 1, 1, NULL),
-(57, 'shea', 'clave56', 'Martin', 'Diem', 'amet@icloud.org', 2, 1, 1, NULL),
-(58, 'colorado', 'clave57', 'Roanna', 'Zavala', 'sit.amet@protonmail.couk', 3, 1, 1, NULL),
-(59, 'grant', 'clave58', 'Signe', 'Sebastian', 'nulla.aliquet.proin@icloud.com', 4, 1, 1, NULL),
-(60, 'brendan', 'clave59', 'Richard', 'Martin', 'semper@outlook.couk', 4, 1, 1, NULL),
-(61, 'linus', 'clave60', 'Willow', 'Fernanda', 'nisi.nibh.lacinia@hotmail.ca', 1, 1, 1, NULL),
-(62, 'nissim', 'clave61', 'Zahir', 'Araya', 'nulla.eget@yahoo.net', 4, 1, 1, NULL),
-(63, 'olympia', 'clave62', 'Tara', 'Chichi', 'sapien.gravida@outlook.org', 4, 1, 1, NULL),
-(64, 'eve', 'clave63', 'Xyla', 'Javier', 'phasellus@aol.com', 2, 1, 1, NULL),
-(65, 'stacey', 'clave64', 'Evelyn', 'Araya', 'praesent.interdum@icloud.ca', 2, 1, 1, NULL),
-(66, 'camilla', 'clave65', 'Kirk', 'Vera', 'pellentesque.ut.ipsum@outlook.org', 3, 1, 1, NULL),
-(67, 'mariam', 'clave66', 'Piper', 'Carla', 'velit.quisque@hotmail.org', 2, 1, 1, NULL),
-(68, 'nadine', 'clave67', 'Leandra', 'Soto', 'tortor.nibh@protonmail.com', 2, 1, 1, NULL),
-(69, 'honorato', 'clave68', 'Winifred', 'Valentina', 'in.mi@icloud.net', 1, 1, 1, NULL),
-(70, 'iliana', 'clave69', 'Audrey', 'Maximiliano', 'cursus.a@icloud.com', 3, 1, 1, NULL),
-(71, 'jasmine', 'clave70', 'Hope', 'Miranda', 'porttitor.eros.nec@hotmail.com', 3, 1, 1, NULL),
-(72, 'garrett', 'clave71', 'Kibo', 'Hernandez', 'integer.sem.elit@hotmail.edu', 3, 1, 1, NULL),
-(73, 'vivian', 'clave72', 'Kyra', 'Vega', 'integer@google.org', 1, 1, 1, NULL),
-(74, 'joy', 'clave73', 'Herman', 'Augustin', 'bibendum.donec@google.couk', 1, 1, 1, NULL),
-(75, 'cameron', 'clave74', 'Malachi', 'Alexandra', 'non.dapibus@yahoo.ca', 3, 1, 1, NULL),
-(76, 'hall', 'clave75', 'Chase', 'Vergara', 'vivamus.rhoncus@outlook.org', 4, 1, 1, NULL),
-(77, 'althea', 'clave76', 'Burton', 'Rojas', 'donec.fringilla.donec@aol.org', 1, 1, 1, NULL),
-(78, 'maile', 'clave77', 'Hayfa', 'Cortes', 'non.ante@icloud.couk', 3, 1, 1, NULL),
-(79, 'clementine', 'clave78', 'Regan', 'Tapia', 'lacinia.mattis@google.edu', 4, 1, 1, NULL),
-(80, 'kadeem', 'clave79', 'Geoffrey', 'Diem', 'mauris.nulla.integer@icloud.ca', 2, 1, 1, NULL),
-(81, 'kiona', 'clave80', 'Wade', 'Gonzalez', 'turpis.egestas.fusce@outlook.couk', 3, 1, 1, NULL),
-(82, 'amelia', 'clave81', 'Carson', 'Alvarez', 'non.luctus@icloud.ca', 4, 1, 1, NULL),
-(83, 'jackson', 'clave82', 'Marsden', 'Barbara', 'phasellus@outlook.org', 4, 1, 1, NULL),
-(84, 'mallory', 'clave83', 'Kylynn', 'Diego', 'sem.egestas@aol.net', 4, 1, 1, NULL),
-(85, 'summer', 'clave84', 'Keane', 'Chichi', 'non.dui.nec@protonmail.com', 3, 1, 1, NULL),
-(86, 'kessie', 'clave85', 'Stella', 'Alexandra', 'cras.eu.tellus@outlook.org', 3, 1, 1, NULL),
-(87, 'zelenia', 'clave86', 'Mikayla', 'Zavala', 'ac.orci.ut@outlook.net', 1, 1, 1, NULL),
-(88, 'angela', 'clave87', 'Mercedes', 'Gonzalez', 'et.magnis.dis@icloud.ca', 1, 1, 1, NULL),
-(89, 'jolie', 'clave88', 'Yoko', 'Hernandez', 'nascetur.ridiculus@icloud.ca', 2, 1, 1, NULL),
-(90, 'rose', 'clave89', 'Evangeline', 'Martina', 'amet@aol.org', 1, 1, 1, NULL),
-(91, 'pascale', 'clave90', 'Ivory', 'Pascal', 'cum.sociis.natoque@protonmail.edu', 1, 1, 1, NULL),
-(92, 'harrison', 'clave91', 'Elaine', 'Valentina', 'duis.at@google.couk', 1, 1, 1, NULL),
-(93, 'len', 'clave92', 'Marsden', 'Francisco', 'phasellus.dapibus.quam@google.com', 2, 1, 1, NULL),
-(94, 'macey', 'clave93', 'Donovan', 'Cortes', 'elit.etiam@hotmail.edu', 3, 1, 1, NULL),
-(95, 'lael', 'clave94', 'Amena', 'Thiarre', 'aliquam.eu.accumsan@aol.net', 2, 1, 1, NULL),
-(96, 'inga', 'clave95', 'Barrett', 'Camila', 'donec.felis@aol.ca', 2, 1, 1, NULL),
-(97, 'winter', 'clave96', 'Paula', 'Sofia', 'magna@protonmail.org', 3, 1, 1, NULL),
-(98, 'mara', 'clave97', 'Carolyn', 'Jose', 'enim.nisl.elementum@hotmail.couk', 4, 1, 1, NULL),
-(99, 'penelope', 'clave98', 'Wesley', 'Rocio', 'mollis.phasellus@protonmail.ca', 2, 1, 1, NULL),
-(100, 'murphy', 'clave99', 'Ryder', 'Valentina', 'ullamcorper@aol.com', 2, 1, 1, NULL),
-(101, 'tashya', 'clave100', 'Lucian', 'Gomez', 'ac.fermentum@outlook.ca', 2, 1, 1, NULL),
-(102, 'Test', '$2y$10$e69edooswhhpM.CfZ/x.LeCX4Y9OK3gPC3U42Ot/E7P', 'Julian', 'Fernandez', 'correo@test.com', 1, 1, 1, NULL),
-(103, 'test', '$2y$10$cjhHTPY82PMjlgzlCpuobOKpMbXrWnSaGr3ka0m3FmkUmY/VgOkj.', 'NombreTest', 'ApellidoTest', 'correo@test.com', 1, 1, 1, NULL);
+(2, 'cocinero', '$2y$10$mwUqhbBkc4AlbAnwfeNb5OsLFnS3DCwbhlwA1P3RltQArHvlNsQ1C', 'cocineroNombre', 'cocineroApellido', 'correo@test.com', 1, 1, 1, NULL),
+(3, 'bartender', '$2y$10$TPf0Bj9wXsNsg5TVbwdes.kz2ZbuK8V1LAjkX4wlGWG2aOkWSPb4m', 'bartenderNombre', 'bartenderApellido', 'correo@test.com', 2, 1, 1, NULL),
+(4, 'cervecero', '$2y$10$uxxLaUNK4YMHCBg6nqUTAuOPoz6JAtFn8nYPVE6TBqgZxviOTLhH6', 'cerveceroNombre', 'cerveceroApellido', 'correo@test.com', 3, 1, 1, NULL),
+(5, 'mozo', '$2y$10$O1C9pQ8HUFcneLRPBN1xwOWK0kjyQFyiIk6QbxluQCYlf/Dj9z3H6', 'mozoNombre', 'mozoApellido', 'correo@test.com', 4, 1, 1, NULL),
+(6, 'socio', '$2y$10$uJajvdULaT0rC6Dn74kdHuxXqkuXFz2VENUctQ4c9SQHkITtypIT2', 'socioNombre', 'socioApellido', 'correo@test.com', 5, 1, 1, NULL),
+(7, 'cocinero2', '$2y$10$4ddBcjr3kWHRBhrCNmg3JehX4c8B2nbD4Xz82l8JnpgAHRK3xniRW', 'NombreTest', 'ApellidoTest', 'correo@test.com', 1, 1, 1, NULL),
+(8, 'cocinero3', '$2y$10$Wuqga4CPHVPf06UZKLmsR.9GfUJxcCzDnn5E/lp7OmBv6W64BVxxG', 'NombreTest', 'ApellidoTest', 'correo@test.com', 1, 1, 1, NULL);
 
 --
 -- Índices para tablas volcadas
@@ -467,7 +388,7 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `encuestas`
 --
 ALTER TABLE `encuestas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `mesas`
@@ -479,13 +400,13 @@ ALTER TABLE `mesas`
 -- AUTO_INCREMENT de la tabla `pedidos`
 --
 ALTER TABLE `pedidos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100;
 
 --
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT de la tabla `sectores`
@@ -503,7 +424,7 @@ ALTER TABLE `tipo_productos`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=104;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

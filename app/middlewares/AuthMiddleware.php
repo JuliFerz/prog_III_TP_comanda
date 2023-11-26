@@ -92,16 +92,16 @@ class AuthMiddleware
         return $response->withHeader('Content-Type', 'application/json');
     }
 
-    // public static function obtenerDataToken(Request $request, RequestHandler $handler): Response
-    // {
-    //     $header = $request->getHeaderLine('Authorization');
-    //     $token = trim(explode("Bearer", $header)[1]);
-    //     $data = AutentificadorJWT::ObtenerData($token);
+    public static function obtenerDataToken(Request $request, RequestHandler $handler): Response
+    {
+        $header = $request->getHeaderLine('Authorization');
+        $token = trim(explode("Bearer", $header)[1]);
+        $data = AutentificadorJWT::ObtenerData($token);
 
-    //     $request = $request->withAttribute('dataToken', $data);
-    //     $response = $handler->handle($request);
-    //     return $response->withHeader('Content-Type', 'application/json');
-    // }
+        $request = $request->withAttribute('dataToken', $data);
+        $response = $handler->handle($request);
+        return $response->withHeader('Content-Type', 'application/json');
+    }
 
     public function getSectoresPermitidos()
     {

@@ -7,7 +7,16 @@ class MesaController implements IApiUsable
 {
     public function TraerTodos($request, $response, $args)
     {
-        $lista = Mesa::obtenerTodos();
+        $queryParams = $request->getQueryParams();
+        $masUsadas = isset($queryParams['mas_usadas'])
+            ? filter_var($queryParams['mas_usadas'], FILTER_VALIDATE_BOOLEAN)
+            : false;
+
+        if ($masUsadas) {
+            $lista = Mesa::obtenerMasUsadas();
+        } else {
+            $lista = Mesa::obtenerTodos();
+        }
         $payload = json_encode(["listaMesas" => $lista]);
         $response->getBody()->write($payload);
         return $response->withHeader('Content-Type', 'application/json');
@@ -32,13 +41,7 @@ class MesaController implements IApiUsable
             $estadoPedido = $bdMesa->{'estado_pedido'};
             $tiempoPedido = $bdMesa->{'tiempo_preparacion'};
 
-            $mensaje = "La mesa con pedido $codigoPedido";
-            $mensaje .= $bdMesa->{'estado_pedido'} != 'listo para servir' 
-                ? " le quedan $tiempoPedido minutos"
-                : " finalizo en $tiempoPedido minutos";
-            $mensaje .= ". La misma se encuentra en estado $estadoPedido";
-            
-            $payload = json_encode(["mesa" => $mensaje]);
+            $payload = json_encode(["mesa" => $bdMesa->{'id'}, "codigo_pedido" => $codigoPedido, "estado" => $estadoPedido, "tiempo_pedido" => $tiempoPedido]);
         } catch (Exception $err) {
             $payload = json_encode(["error" => $err->getMessage()]);
         } finally {
@@ -67,12 +70,14 @@ class MesaController implements IApiUsable
         $id = $args['mesa'];
         $codigoPedido = $parametros['codigo_pedido'] ?? null;
         $tiempoPreparacion = $parametros['tiempo_preparacion'] ?? null;
+        $vecesUsada = $parametros['veces_usada'] ?? null;
         $estado = $parametros['estado'];
 
         $mesa = new Mesa();
         $mesa->setId($id);
         $mesa->setCodigoPedido($codigoPedido);
         $mesa->setTiempoPreparacion($tiempoPreparacion);
+        $mesa->setVecesUsada($vecesUsada);
         $mesa->setEstado($estado);
         $res = $mesa->modificarMesa();
 

@@ -13,6 +13,7 @@ class Mesa {
     private int $_id;
     private ?string $_codigoPedido;
     private ?int $_tiempoPreparacion;
+    private ?int $_vecesUsada;
     private string $_estado;
     private DateTime $_fechaBaja;
 
@@ -21,6 +22,16 @@ class Mesa {
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM mesas");
+        $consulta->execute();
+
+        return $consulta->fetchAll(PDO::FETCH_CLASS, 'Mesa');
+    }
+
+    public static function obtenerMasUsadas()
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM mesas 
+            ORDER BY veces_usada DESC;");
         $consulta->execute();
 
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Mesa');
@@ -75,6 +86,7 @@ class Mesa {
             $this->_estado = $this->{'estado'};
             $this->_codigoPedido = $this->{'codigo_pedido'};
             $this->_tiempoPreparacion = $this->{'tiempo_preparacion'} ?? null;
+            $this->_vecesUsada = $this->{'veces_usada'} ?? null;
         }
         if (!Mesa::obtenerMesaPorId($this->_id)){ 
             return false;
@@ -83,11 +95,13 @@ class Mesa {
         $consulta = $objAccesoDato->prepararConsulta("UPDATE mesas 
             SET codigo_pedido = :codigo_pedido,
                 tiempo_preparacion = :tiempo_preparacion,
+                veces_usada = :veces_usada,
                 estado = :estado
             WHERE id = :id");
         $consulta->bindValue(':id', $this->_id, PDO::PARAM_INT);
         $consulta->bindValue(':codigo_pedido', $this->_codigoPedido, PDO::PARAM_STR);
         $consulta->bindValue(':tiempo_preparacion', $this->_tiempoPreparacion, PDO::PARAM_STR);
+        $consulta->bindValue(':veces_usada', $this->_vecesUsada, PDO::PARAM_INT);
         $consulta->bindValue(':estado', $this->_estado, PDO::PARAM_STR);
         $consulta->execute();
         return true;
@@ -123,6 +137,9 @@ class Mesa {
     public function getTiempoPreparacion(){
         return $this->_tiempoPreparacion;
     }
+    public function getVecesUsada(){
+        return $this->_vecesUsada;
+    }
     public function getEstado(){
         return $this->_estado;
     }
@@ -139,6 +156,9 @@ class Mesa {
     }
     public function setTiempoPreparacion($valor){
         $this->_tiempoPreparacion = $valor;
+    }
+    public function setVecesUsada($valor){
+        $this->_vecesUsada = $valor;
     }
     public function setEstado($valor){
         $this->_estado = $valor;

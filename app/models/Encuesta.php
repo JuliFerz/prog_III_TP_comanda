@@ -11,6 +11,15 @@ class Encuesta {
     private DateTime $_fechaBaja;
 
 
+    public static function obtenerMejores()
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM encuestas
+            ORDER BY (puntos_mesa + puntos_restaurante + puntos_cocinero + puntos_mozo) DESC;");
+        $consulta->execute();
+        return $consulta->fetchAll(PDO::FETCH_CLASS, 'Encuesta');
+    }
+
     public static function obtenerTodos()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();

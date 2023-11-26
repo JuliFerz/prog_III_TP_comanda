@@ -65,8 +65,11 @@ class Pedido {
     public static function obtenerPedidosPorCodigo($id)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM pedidos
-            WHERE codigo_pedido = (SELECT codigo_pedido FROM pedidos WHERE id = :id)");
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT pe.*, 
+                pr.nombre as 'nombre_producto' 
+            FROM pedidos pe
+            INNER JOIN productos pr ON pe.id_producto = pr.id
+            WHERE pe.codigo_pedido = (SELECT codigo_pedido FROM pedidos WHERE id = :id)");
         $consulta->bindValue(':id', $id, PDO::PARAM_INT);
         $consulta->execute();
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Pedido');

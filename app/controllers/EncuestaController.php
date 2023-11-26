@@ -8,7 +8,17 @@ class EncuestaController implements IApiUsable
 {
     public function TraerTodos($request, $response, $args)
     {
-        $lista = Encuesta::obtenerTodos();
+        $queryParams = $request->getQueryParams();
+        $mejoresEncuestas = isset($queryParams['mejores_encuestas'])
+            ? filter_var($queryParams['mejores_encuestas'], FILTER_VALIDATE_BOOLEAN)
+            : false;
+
+        if ($mejoresEncuestas) {
+            $lista = Encuesta::obtenerMejores();
+        } else {
+            $lista = Encuesta::obtenerTodos();
+        }
+
         $payload = json_encode(["listaEncuestas" => $lista]);
         $response->getBody()->write($payload);
         return $response->withHeader('Content-Type', 'application/json');

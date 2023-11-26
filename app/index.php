@@ -88,12 +88,14 @@ $app->group('/pedidos', function (RouteCollectorProxy $group) {
     $tomarFoto = new AuthMiddleware();
     $prepararPedido = new AuthMiddleware();
     $completarPedido = new AuthMiddleware();
+    $servirPedido = new AuthMiddleware();
     $cobrarPedido = new AuthMiddleware();
     $cerrarPedido = new AuthMiddleware();
 
     $traerDisponibles->setSectoresPermitidos(
         ['admin', 'socio', 'cocinero', 'bartender', 'cervecero', 'mozo']);
-    $traerTodos->setSectoresPermitidos(['admin', 'socio']);
+    $traerTodos->setSectoresPermitidos(
+        ['admin', 'socio', 'cocinero', 'bartender', 'cervecero', 'mozo']);
     $traerUno->setSectoresPermitidos(
         ['admin', 'socio', 'cocinero', 'bartender', 'cervecero', 'mozo']);
     $cargarUno->setSectoresPermitidos(['admin', 'socio', 'mozo']);
@@ -103,17 +105,20 @@ $app->group('/pedidos', function (RouteCollectorProxy $group) {
         ['admin', 'socio', 'cocinero', 'bartender', 'cervecero', 'mozo']);
     $prepararPedido->setSectoresPermitidos(
         ['admin', 'socio', 'cocinero', 'bartender', 'cervecero', 'mozo']);
-    $completarPedido->setSectoresPermitidos(['admin', 'socio', 'mozo']);
+    $completarPedido->setSectoresPermitidos(
+        ['admin', 'socio', 'cocinero', 'bartender', 'cervecero', 'mozo']);
+    $servirPedido->setSectoresPermitidos(['admin', 'socio', 'mozo']);
     $cobrarPedido->setSectoresPermitidos(['admin', 'socio', 'mozo']);
     $cerrarPedido->setSectoresPermitidos(['admin', 'socio']);
 
     $group->get('/disponibles', \PedidoController::class . ':TraerDisponibles')
         ->add($traerDisponibles)
-        // ->add(\AuthMiddleware::class . ':obtenerDataToken')
+        ->add(\AuthMiddleware::class . ':obtenerDataToken')
         ->add(\AuthMiddleware::class . ':verificarToken');
 
     $group->get('[/]', \PedidoController::class . ':TraerTodos')
         ->add($traerTodos)
+        ->add(\AuthMiddleware::class . ':obtenerDataToken')
         ->add(\AuthMiddleware::class . ':verificarToken');
 
     $group->get('/{pedido}', \PedidoController::class . ':TraerUno')
@@ -138,10 +143,16 @@ $app->group('/pedidos', function (RouteCollectorProxy $group) {
 
     $group->post('/{pedido}/prepararPedido', \PedidoController::class . ':PrepararPedido')
         ->add($prepararPedido)
+        ->add(\AuthMiddleware::class . ':obtenerDataToken')
         ->add(\AuthMiddleware::class . ':verificarToken');
 
     $group->post('/{pedido}/completarPedido', \PedidoController::class . ':CompletarPedido')
         ->add($completarPedido)
+        ->add(\AuthMiddleware::class . ':obtenerDataToken')
+        ->add(\AuthMiddleware::class . ':verificarToken');
+
+    $group->post('/{pedido}/servirPedido', \PedidoController::class . ':ServirPedido')
+        ->add($servirPedido)
         ->add(\AuthMiddleware::class . ':verificarToken');
 
     $group->post('/{pedido}/cobrarPedido', \PedidoController::class . ':CobrarPedido')
@@ -197,7 +208,7 @@ $app->group('/mesas', function (RouteCollectorProxy $group) {
     $modificarUno = new AuthMiddleware();
     $borrarUno = new AuthMiddleware();
 
-    $traerTodos->setSectoresPermitidos(['socio', 'admin', 'mozo']);
+    $traerTodos->setSectoresPermitidos(['socio', 'admin']);
     $traerUno->setSectoresPermitidos(['socio', 'admin', 'mozo']);
     $consultarEstado->setSectoresPermitidos(['socio', 'admin', 'mozo', 'cliente']);
     $cargarUno->setSectoresPermitidos(['socio', 'admin', 'mozo']);
@@ -261,11 +272,11 @@ $app->group('/encuestas', function (RouteCollectorProxy $group) {
     $modificarUno = new AuthMiddleware();
     $borrarUno = new AuthMiddleware();
 
-    $traerTodos->setSectoresPermitidos(['socio', 'admin', 'cliente']);
-    $traerUno->setSectoresPermitidos(['socio', 'admin', 'cliente']);
-    $cargarUno->setSectoresPermitidos(['socio', 'admin', 'cliente']);
-    $modificarUno->setSectoresPermitidos(['socio', 'admin', 'cliente']);
-    $borrarUno->setSectoresPermitidos(['socio', 'admin', 'cliente']);
+    $traerTodos->setSectoresPermitidos(['socio', 'admin']);
+    $traerUno->setSectoresPermitidos(['socio', 'admin']);
+    $cargarUno->setSectoresPermitidos(['socio', 'admin']);
+    $modificarUno->setSectoresPermitidos(['socio', 'admin']);
+    $borrarUno->setSectoresPermitidos(['socio', 'admin']);
 
     $group->get('[/]', \EncuestaController::class . ':TraerTodos')
         ->add($traerTodos)

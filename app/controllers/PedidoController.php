@@ -10,10 +10,13 @@ class PedidoController implements IApiUsable
 {
     public function TraerTodos($request, $response, $args)
     {
-        $queryParams = $request->getQueryParams();
-        $pedidosPorUsuario = isset($queryParams['usuario'])
-            ? $queryParams['usuario']
-            : false;
+        $dataToken = $request->getAttribute('dataToken');
+
+        if (in_array($dataToken->{'sector'}, ['admin', 'socio'])){
+            $pedidosPorUsuario = false;
+        } else {
+            $pedidosPorUsuario = $dataToken->{'id'};
+        }
         if ($pedidosPorUsuario) {
             $lista = Pedido::obtenerTodosPorUsuario($pedidosPorUsuario);
         } else {
@@ -25,8 +28,8 @@ class PedidoController implements IApiUsable
     }
     public function TraerDisponibles($request, $response, $args)
     {
-        $queryParams = $request->getQueryParams();
-        $id = $queryParams['usuario'];
+        $dataToken = $request->getAttribute('dataToken');
+        $id = $dataToken->{'id'};
         $lista = Pedido::obtenerDisponibles($id);
         $payload = json_encode(["listaPedidosDisponibles" => $lista]);
         $response->getBody()->write($payload);
@@ -79,6 +82,7 @@ class PedidoController implements IApiUsable
                 }
                 $bdMesa->{'estado'} = 'con cliente esperando pedido';
                 $bdMesa->{'codigo_pedido'} = $codigoPedido;
+                $bdMesa->{'veces_usada'} += 1;
                 $bdMesa->modificarMesa(true);
             }
 
@@ -186,10 +190,13 @@ class PedidoController implements IApiUsable
     public function PrepararPedido($request, $response, $args)
     {
         try {
-            $parametros = $request->getParsedBody();
+            $dataToken = $request->getAttribute('dataToken');;
             $idPedido = $args['pedido'];
-            $idUsuario = $parametros['id_usuario'];
+            $idUsuario = $dataToken->{'id'};
 
+            if (in_array($dataToken->{'sector'}, ['admin', 'socio', 'mozo'])){
+                throw new Exception("El usuario no esta permitido a preparar pedido. No puede ser Admin, Socio y/o Mozo.");
+            }
             $bdPedido = Pedido::obtenerPedidoPorId($idPedido);
             if (!$bdPedido) {
                 throw new Exception("El pedido $idPedido no existe");
@@ -243,40 +250,71 @@ class PedidoController implements IApiUsable
     public function CompletarPedido($request, $response, $args)
     {
         try {
+            $dataToken = $request->getAttribute('dataToken');
+            $idUsuario = $dataToken->{'id'};
+
+            $id = $args['pedido'];
+            $bdPedido = Pedido::obtenerPedidoPorId($id);
+            if(!$bdPedido) {
+                throw new Exception("No existe un pedido con el id $id");
+            }
+            $codigoPedido = $bdPedido->{'codigo_pedido'};
+
+            // Validar pedido completo
+            if ($bdPedido->{'id_usuario'} == NULL) {
+                throw new Exception("El pedido no esta completo. El pedido $id esta sin usuario asignado");
+            }
+            if ($bdPedido->{'id_usuario'} != $idUsuario) {
+                throw new Exception("Su usuario no pertenece al pedido en cuestion");
+            }
+            if ($bdPedido->{'estado'} == 'listo para servir') {
+                throw new Exception("El pedido $id ($codigoPedido) ya se encuentra listo para servir");
+            }
+
+            // Modificaciones al usuario del pedido
+            $usuario = Usuario::obtenerUsuario($idUsuario);
+            $usuario->{'estado'} = 1;
+            $usuario->modificarUsuario(true);
+            
+            // Modificaciones al pedido
+            $bdPedido->{'estado'} = 'listo para servir';
+            $bdPedido->modificarPedido(true);
+
+            $payload = json_encode(array("mensaje" => "Pedido $codigoPedido completado correctamente"));
+        } catch (Exception $err) {
+            $payload = json_encode(['error' => $err->getMessage()]);
+        } finally {
+            $response->getBody()->write($payload);
+            return $response->withHeader('Content-Type', 'application/json');
+        }
+    }
+
+    public function ServirPedido($request, $response, $args)
+    {
+        try {
+            $todosCompletos = true;
             $id = $args['pedido'];
             $bdPedidos = Pedido::obtenerPedidosPorCodigo($id);
             if(!$bdPedidos) {
                 throw new Exception("No existe un pedido con el id $id");
             }
-            $codigoPedido = $bdPedidos[0]->{'codigo_pedido'};
-
-            // Validar pedido completo
-            array_map(function ($pedido) use ($codigoPedido) {
-                if ($pedido->{'id_usuario'} == NULL) {
-                    $idP = $pedido->{'id'};
-                    throw new Exception("El pedido no esta completo. El pedido $idP esta sin usuario asignado");
-                }
-                if ($pedido->{'estado'} == 'listo para servir') {
-                    $idP = $pedido->{'id'};
-                    throw new Exception("El pedido $idP ($codigoPedido) ya se encuentra listo para servir");
-                }
-            }, $bdPedidos);
 
             foreach($bdPedidos as $pedido){
-                // Modificaciones al usuario del pedido
-                $usuario = Usuario::obtenerUsuario($pedido->{'id_usuario'});
-                $usuario->{'estado'} = 1;
-                $usuario->modificarUsuario(true);
-                
-                // Modificaciones al pedido
-                $pedido->{'estado'} = 'listo para servir';
-                $pedido->modificarPedido(true);
+                if($pedido->{'estado'} != 'listo para servir'){
+                    $todosCompletos = false;
+                    break;
+                }
             }
+            if(!$todosCompletos){
+                throw new Exception("No se puede servir el pedido. No estan todos los pedidos listos para servir");
+            }
+
+            $codigoPedido = $bdPedidos[0]->{'codigo_pedido'};
             $bdMesa = Mesa::obtenerMesaPorCodigo($codigoPedido);
             $bdMesa->{'estado'} = 'con cliente comiendo';
             $bdMesa->modificarMesa(true);
 
-            $payload = json_encode(array("mensaje" => "Pedido $codigoPedido completado correctamente"));
+            $payload = json_encode(array("mensaje" => "Mesa actualizada correctamente"));
         } catch (Exception $err) {
             $payload = json_encode(['error' => $err->getMessage()]);
         } finally {
