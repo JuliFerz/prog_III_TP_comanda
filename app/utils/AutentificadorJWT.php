@@ -8,7 +8,6 @@ date_default_timezone_set("America/Argentina/Buenos_Aires");
 class AutentificadorJWT
 {
     private static $claveSecreta = 'ComandaTP_PROGRAIII';
-    // private static $claveSecreta = 'T3sT$JWT';
     private static $tipoEncriptacion = ['HS256'];
 
     public static function CrearToken($datos)
