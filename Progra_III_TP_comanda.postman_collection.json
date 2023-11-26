@@ -1,0 +1,1614 @@
+{
+	"info": {
+		"_postman_id": "943eb697-c3e6-45bf-8cda-76456b82deea",
+		"name": "Progra_III_TP_comanda",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23355319"
+	},
+	"item": [
+		{
+			"name": "Usuario",
+			"item": [
+				{
+					"name": "Traer usuarios",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/usuarios",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Traer usuario",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/usuarios/103",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"usuarios",
+								"103"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear usuario",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "usuario",
+									"value": "test",
+									"type": "text"
+								},
+								{
+									"key": "clave",
+									"value": "test",
+									"type": "text"
+								},
+								{
+									"key": "nombre",
+									"value": "NombreTest",
+									"type": "text"
+								},
+								{
+									"key": "apellido",
+									"value": "ApellidoTest",
+									"type": "text"
+								},
+								{
+									"key": "correo",
+									"value": "correo@test.com",
+									"type": "text"
+								},
+								{
+									"key": "id_sector",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "prioridad",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}/usuarios",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modificar usuario",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "usuario",
+									"value": "Test",
+									"type": "text"
+								},
+								{
+									"key": "clave",
+									"value": "$2y$10$e69edooswhhpM.CfZ/x.LeCX4Y9OK3gPC3U42Ot/E7P",
+									"type": "text"
+								},
+								{
+									"key": "nombre",
+									"value": "Julian",
+									"type": "text"
+								},
+								{
+									"key": "apellido",
+									"value": "Fernandez",
+									"type": "text"
+								},
+								{
+									"key": "correo",
+									"value": "correo@test.com",
+									"type": "text"
+								},
+								{
+									"key": "id_sector",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "estado",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "prioridad",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}/usuarios/102",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"usuarios",
+								"102"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Borrar usuario",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/usuarios/102",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"usuarios",
+								"102"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Pedido",
+			"item": [
+				{
+					"name": "Traer pedidos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/pedidos",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"pedidos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Traer pedidos disponibles",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/pedidos/disponibles",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"pedidos",
+								"disponibles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Traer pedido",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/pedidos/94?pedido_completo=true",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"pedidos",
+								"94"
+							],
+							"query": [
+								{
+									"key": "pedido_completo",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear pedido",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "codigo_pedido",
+									"value": "xRkU9",
+									"type": "text"
+								},
+								{
+									"key": "id_producto",
+									"value": "23",
+									"type": "text"
+								},
+								{
+									"key": "id_mesa",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "nombre_cliente",
+									"value": "Cliente de prueba",
+									"type": "text"
+								},
+								{
+									"key": "descripcion",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}/pedidos",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"pedidos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modificar pedido",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "codigo_pedido",
+									"value": "26",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "id_producto",
+									"value": "18",
+									"type": "text"
+								},
+								{
+									"key": "id_mesa",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "id_usuario",
+									"value": "45",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "tiempo_preparacion",
+									"value": "35",
+									"type": "text"
+								},
+								{
+									"key": "nombre_cliente",
+									"value": "Cliente de prueba",
+									"type": "text"
+								},
+								{
+									"key": "descripcion",
+									"value": "Hola mundo.",
+									"type": "text"
+								},
+								{
+									"key": "estado",
+									"value": "pendiente",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}/pedidos/87",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"pedidos",
+								"87"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Borrar pedido",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/pedidos/1",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"pedidos",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Tomar foto pedido",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "foto",
+									"type": "file",
+									"src": "/D:/Users/julian/Downloads/20231122_224623.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}/pedidos/99/tomarFoto",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"pedidos",
+								"99",
+								"tomarFoto"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Preparar pedido",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{URL}}/pedidos/99/prepararPedido",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"pedidos",
+								"99",
+								"prepararPedido"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Completar pedido",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{URL}}/pedidos/99/completarPedido",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"pedidos",
+								"99",
+								"completarPedido"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Servir pedido",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{URL}}/pedidos/96/servirPedido",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"pedidos",
+								"96",
+								"servirPedido"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cobrar pedido",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{URL}}/pedidos/96/cobrarPedido",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"pedidos",
+								"96",
+								"cobrarPedido"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cerrar pedido",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{URL}}/pedidos/96/cerrarPedido",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"pedidos",
+								"96",
+								"cerrarPedido"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Encuesta",
+			"item": [
+				{
+					"name": "Traer encuestas",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/encuestas?mejores_encuestas=true",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"encuestas"
+							],
+							"query": [
+								{
+									"key": "mejores_encuestas",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Traer encuesta",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/encuestas/7",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"encuestas",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear encuesta",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "codigo_pedido",
+									"value": "xRkU9",
+									"type": "text"
+								},
+								{
+									"key": "puntos_mesa",
+									"value": "10",
+									"type": "text"
+								},
+								{
+									"key": "puntos_restaurante",
+									"value": "10",
+									"type": "text"
+								},
+								{
+									"key": "puntos_mozo",
+									"value": "10",
+									"type": "text"
+								},
+								{
+									"key": "puntos_cocinero",
+									"value": "10",
+									"type": "text"
+								},
+								{
+									"key": "comentarios",
+									"value": "Esto es un comentario de test para mi encuesta.",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}/encuestas",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"encuestas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modificar encuesta",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "codigo_pedido",
+									"value": "Qud25",
+									"type": "text"
+								},
+								{
+									"key": "puntos_mesa",
+									"value": "9",
+									"type": "text"
+								},
+								{
+									"key": "puntos_restaurante",
+									"value": "8",
+									"type": "text"
+								},
+								{
+									"key": "puntos_mozo",
+									"value": "7",
+									"type": "text"
+								},
+								{
+									"key": "puntos_cocinero",
+									"value": "6",
+									"type": "text"
+								},
+								{
+									"key": "comentarios",
+									"value": "Todo ok por el momento.",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}/encuestas/1",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"encuestas",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Borrar encuesta",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/encuestas/7",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"encuestas",
+								"7"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Mesa",
+			"item": [
+				{
+					"name": "Traer mesas",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/mesas?mas_usadas=true",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"mesas"
+							],
+							"query": [
+								{
+									"key": "mas_usadas",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Traer mesa",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/mesas/1",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"mesas",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ConsultarEstado",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/mesas/xRkU9/estado",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"mesas",
+								"xRkU9",
+								"estado"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear mesa",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "estado",
+									"value": "1",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}/mesas",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"mesas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modificar mesa",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "estado",
+									"value": "libre",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}/mesas/1",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"mesas",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Borrar mesa",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/mesas/11",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"mesas",
+								"11"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Producto",
+			"item": [
+				{
+					"name": "Traer productos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/productos",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"productos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Traer producto",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/productos/1?por_tipo=true",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"productos",
+								"1"
+							],
+							"query": [
+								{
+									"key": "por_tipo",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear producto",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "nombre",
+									"value": "Pure",
+									"type": "text"
+								},
+								{
+									"key": "id_sector",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "precio",
+									"value": "5500",
+									"type": "text"
+								},
+								{
+									"key": "stock",
+									"value": "70014",
+									"type": "text"
+								},
+								{
+									"key": "tiempo_preparacion",
+									"value": "60",
+									"type": "text"
+								},
+								{
+									"key": "estado",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}/productos",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"productos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modificar producto",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "nombre",
+									"value": "Pure con milanesa",
+									"type": "text"
+								},
+								{
+									"key": "id_sector",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "precio",
+									"value": "6500",
+									"type": "text"
+								},
+								{
+									"key": "stock",
+									"value": "70014",
+									"type": "text"
+								},
+								{
+									"key": "tiempo_preparacion",
+									"value": "25",
+									"type": "text"
+								},
+								{
+									"key": "estado",
+									"value": "1",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}/productos/19",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"productos",
+								"19"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Borrar producto",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/productos/19",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"productos",
+								"19"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Sector",
+			"item": [
+				{
+					"name": "Traer sectores",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/sectores/",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"sectores",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Traer sector",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/sectores/7",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"sectores",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear sector",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "detalle",
+									"value": "Test",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}/sectores/",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"sectores",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modificar sector",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "detalle",
+									"value": "Test(2)",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}/sectores/7",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"sectores",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Borrar sector",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/sectores/7",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"sectores",
+								"7"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Autenticacion",
+			"item": [
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json()['token'];\r",
+									"pm.environment.set(\"token\", jsonData);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "usuario",
+									"value": "admin",
+									"type": "text"
+								},
+								{
+									"key": "clave",
+									"value": "admin",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}/login/",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"login",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CSV",
+			"item": [
+				{
+					"name": "Descargar entidades",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/csv/descargar?entidad=usuarios",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"csv",
+								"descargar"
+							],
+							"query": [
+								{
+									"key": "entidad",
+									"value": "usuarios"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cargar entidades",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "archivo",
+									"type": "file",
+									"src": "/D:/Users/julian/Documents/Julian/UTN/3. Tercer cuatrimestre/prog_III_TP_comanda/cargar_usuarios.csv"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}/csv/cargar?entidad=usuarios",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"csv",
+								"cargar"
+							],
+							"query": [
+								{
+									"key": "entidad",
+									"value": "usuarios"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "main",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
