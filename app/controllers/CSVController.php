@@ -9,8 +9,8 @@ class CSVController
     public function DescargarEntidad($request, $response, $args)
     {
         try {
+            $filename = '';
             $queryParams = $request->getQueryParams();
-            $dir = '';
             $entidad = isset($queryParams['entidad'])
                 ? $queryParams['entidad']
                 : false;
@@ -21,19 +21,18 @@ class CSVController
 
             switch ($entidad) {
                 case 'usuarios':
-                    $dir = 'usuarios';
+                    $filename = 'usuarios';
                     $bdUsuarios = Usuario::obtenerTodosCSV();
-                    Usuario::DescargaUsuarios($bdUsuarios);
+                    Usuario::DescargaUsuariosCSV($bdUsuarios);
                     break;
                 default:
                     throw new Exception('Entidad no contemplada.');
             }
 
-
-            $payload = json_encode(["mensaje" => "Se descargo correctamente el CSV en /public/$dir.csv"]);
+            $response = new \Slim\Psr7\Response();
+            return $response->withHeader('Content-Type', 'text/csv')->withHeader('Content-Disposition', "attachment; filename=$filename.csv");
         } catch (Exception $err) {
             $payload = json_encode(['error' => $err->getMessage()]);
-        } finally {
             $response->getBody()->write($payload);
             return $response->withHeader('Content-Type', 'application/json');
         }

@@ -120,9 +120,10 @@ class Usuario {
         return true;
     }
 
-    public static function DescargaUsuarios($usuarios){
-        $fileController = new FileController('public/csv/');
-        $file = $fileController->abrirArchivo('usuarios', 'csv');
+    public static function DescargaUsuariosCSV($usuarios){
+        $file = fopen('php://output', 'w');
+        $headers = array_keys($usuarios[0]);
+        fputcsv($file, $headers);
         foreach ($usuarios as $usuario) {
             fputcsv($file, $usuario);
         }
